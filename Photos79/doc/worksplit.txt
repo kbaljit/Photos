@@ -1,0 +1,6 @@
+Window	            Partner Name
+User Login			Baljit Kaur
+Album Display		Baljit Kaur
+Admin Subsystem		Milan Patel
+Photos in Albums	Milan Patel
+
