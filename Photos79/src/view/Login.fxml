@@ -10,9 +10,9 @@
 
 <AnchorPane prefHeight="399.0" prefWidth="455.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginController">
    <children>
-      <TextField layoutX="116.0" layoutY="169.0" promptText="Username" />
-      <PasswordField layoutX="116.0" layoutY="236.0" promptText="Password" />
-      <Button layoutX="181.0" layoutY="303.0" mnemonicParsing="false" text="Login" />
+      <TextField fx:id="User" layoutX="116.0" layoutY="169.0" promptText="Username" />
+      <PasswordField fx:id="Password" layoutX="116.0" layoutY="236.0" promptText="Password" />
+      <Button fx:id="Login" layoutX="181.0" layoutY="303.0" mnemonicParsing="false" onAction="#buttonAction" text="Login" />
       <TextArea layoutX="16.0" layoutY="53.0" prefHeight="87.0" prefWidth="424.0" text="Welcome to Photos App!&#10;Enter Username and Password below">
          <effect>
             <SepiaTone />
