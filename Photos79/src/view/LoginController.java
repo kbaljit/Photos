@@ -22,7 +22,7 @@ public class LoginController {
 	@FXML
 	private void buttonAction(ActionEvent E) throws IOException{
 		
-		if(User.getText().equals("Admin")){
+		if(User.getText().equals("admin")){
 		Parent loginParent=FXMLLoader.load(getClass().getResource("/view/AdminSystem.fxml"));
 		Scene loginScene=new Scene(loginParent, 500, 500);
 		Stage loginStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
