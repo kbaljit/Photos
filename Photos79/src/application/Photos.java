@@ -20,7 +20,6 @@ public class Photos extends Application {
 				      LoginController listController = 
 				         loader.getController();
 				      listController.start(primaryStage);
-
 				      Scene scene = new Scene(root, 450, 350);
 				      primaryStage.setScene(scene);
 				      primaryStage.setTitle("Photos App Login");

@@ -16,13 +16,13 @@ import javafx.stage.Stage;
 
 public class LoginController {
 	@FXML Button Login;
-	@FXML TextField User;
+	@FXML TextField username;
 	@FXML PasswordField Password;
 	
 	@FXML
 	private void buttonAction(ActionEvent E) throws IOException{
 		
-		if(User.getText().equals("admin")){
+		if(username.getText().equals("admin")){
 		Parent loginParent=FXMLLoader.load(getClass().getResource("/view/AdminSystem.fxml"));
 		Scene loginScene=new Scene(loginParent, 500, 500);
 		Stage loginStage=(Stage) ((Node) E.getSource()).getScene().getWindow();

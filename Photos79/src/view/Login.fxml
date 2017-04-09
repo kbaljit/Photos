@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginController">
    <children>
       <TitledPane alignment="CENTER" animated="false" collapsible="false" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white; -fx-border-color: white;" text="Photo Library" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
@@ -54,7 +53,7 @@
                               </AnchorPane>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <Button fx:id="login" layoutX="265.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: white;" text="Login">
+                                    <Button fx:id="login" layoutX="265.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonAction" style="-fx-background-color: white;" text="Login">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="12.0" />
                                        </font>
