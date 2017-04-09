@@ -1,5 +1,7 @@
 package application;
 	
+import java.io.Serializable;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -8,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
 
-public class Photos extends Application {
+public class Photos extends Application implements Serializable{
 		@Override
 		public void start(Stage primaryStage) 
 				throws Exception {

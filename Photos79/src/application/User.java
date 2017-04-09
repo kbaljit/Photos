@@ -1,9 +1,9 @@
 package application;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class User implements Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3652302789390595455L;
 	private String username;
 	private String password;
 	
