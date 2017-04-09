@@ -23,16 +23,17 @@ public class LoginController {
 	private void buttonAction(ActionEvent E) throws IOException{
 		
 		if(User.getText().equals("admin")){
-		Parent loginParent=FXMLLoader.load(getClass().getResource("/view/AdminSystem.fxml"));
-		Scene loginScene=new Scene(loginParent, 500, 500);
-		Stage loginStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
-		loginStage.hide();
-	    loginStage.setTitle("Admin System");
-	    loginStage.setResizable(false);
-		loginStage.setScene(loginScene);
-		loginStage.show();
+			Parent loginParent=FXMLLoader.load(getClass().getResource("/view/AdminSystem.fxml"));
+			Scene loginScene=new Scene(loginParent, 500, 500);
+			Stage loginStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
+			loginStage.hide();
+			loginStage.setTitle("Admin System");
+			loginStage.setResizable(false);
+			loginStage.setScene(loginScene);
+			loginStage.show();
+		}else{
+			
 		}
-		
 		
 	}
 	public void start(Stage mainStage){    
