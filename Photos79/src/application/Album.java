@@ -14,18 +14,18 @@ public class Album {
 		photos.add(photo);
 	}
 	
-	/*
-	public Photo getPhotoByName(){
-		for(int i = 0; i < photos.size(); i++){
-			//if(photos.get(i).)
-		}
-	}
-	
-	public ArrayList<Photo> getPhotosByTag(String tag){
+	public ArrayList<Photo> getPhotosByTags(ArrayList<Tag> tags){
+		ArrayList<Photo> matches = new ArrayList<>();
 		
+		for(int i = 0; i < photos.size(); i++){
+			if(photos.get(i).searchTags(tags)){
+				matches.add(photos.get(i));
+			}
+		}
+		return matches;
 	}
 	
-	public ArrayList<Photo> getPhotosByDate(String date){
+	/*public ArrayList<Photo> getPhotosByDate(String date){
 		
 	}*/
 }
