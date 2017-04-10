@@ -14,6 +14,10 @@ public class Album {
 		photos.add(photo);
 	}
 	
+	public String getTitle(){
+		return title;
+	}
+	
 	public ArrayList<Photo> getPhotosByTags(ArrayList<Tag> tags){
 		ArrayList<Photo> matches = new ArrayList<>();
 		
