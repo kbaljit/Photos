@@ -1,6 +1,9 @@
 package view;
 
 import java.io.IOException;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +19,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class AdminSystemController {
-	@FXML ListView<String> UserDisplay;
+	@FXML ListView<String> userDisplay;
 	@FXML PieChart AdminChart;
 	@FXML MenuItem Logout;
 	@FXML MenuItem Create;
@@ -50,6 +53,7 @@ public class AdminSystemController {
 	
 	@FXML
 	private void listUsers(ActionEvent E) throws IOException{
+
 		
 	}
 	
@@ -63,8 +67,7 @@ public class AdminSystemController {
 	}
 	
 public void start(Stage mainStage){    
-		
-		
+			System.out.println("Hello");
 
 	}
 

@@ -24,6 +24,7 @@ public class LoginController {
 		Parent loginParent=FXMLLoader.load(getClass().getResource("/view/AdminSystem.fxml"));
 		Scene loginScene=new Scene(loginParent, 500, 500);
 		Stage loginStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
+		
 		loginStage.hide();
 	    loginStage.setTitle("Admin System");
 	    loginStage.setResizable(false);
@@ -31,7 +32,6 @@ public class LoginController {
 		loginStage.show();
 		}
 		else if((!username.getText().isEmpty()) && (!password.getText().isEmpty())){
-			
 			
 			Parent loginParent=FXMLLoader.load(getClass().getResource("/view/UserSystem.fxml"));
 			Scene loginScene=new Scene(loginParent, 700, 700);
@@ -41,7 +41,7 @@ public class LoginController {
 		    loginStage.setResizable(false);
 			loginStage.setScene(loginScene);
 			loginStage.show();
-		
+			
 			
 		}
 		else{
