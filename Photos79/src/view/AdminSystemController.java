@@ -53,6 +53,7 @@ public class AdminSystemController {
 	
 	@FXML
 	private void listUsers(ActionEvent E) throws IOException{
+		userDisplay.setItems(users);
 
 		
 	}
@@ -65,9 +66,11 @@ public class AdminSystemController {
 		alert.showAndWait();
 		
 	}
-	
-public void start(Stage mainStage){    
-			System.out.println("Hello");
+	public ObservableList<String> users;
+
+	public void start(Stage mainStage){    
+			users=FXCollections.observableArrayList();
+			users.add("Name");
 
 	}
 
