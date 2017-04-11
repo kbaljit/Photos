@@ -1,21 +1,25 @@
 package application;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javafx.scene.image.Image;
 
 
 public class Photo {
-	private Image image;
+	private File image;
 	private Calendar date;
 	private String caption;
 	private ArrayList<Tag> tags;
 	
-	public Photo(Image image){
+	public Photo(File image){
 		this.image = image;
-		//date = new Date()
-		//date.set(Calendar.MILLISECOND, 0);
+		date = Calendar.getInstance();
+		Date d = new Date(image.lastModified());
+		date.setTime(d);
+		date.set(Calendar.MILLISECOND, 0);
 	}
 	
 	public void setCaption(String caption){
@@ -24,6 +28,10 @@ public class Photo {
 	
 	public String getCaption(){
 		return caption;
+	}
+	
+	public Calendar getDate(){
+		return date;
 	}
 	
 	public boolean addTag(Tag tag){
