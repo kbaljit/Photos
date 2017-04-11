@@ -30,6 +30,8 @@ public class AdminSystemController {
 	
 	@FXML 
 	private void Logout(ActionEvent E) throws IOException{
+		//Save changes to disk
+		
 		Parent logoutParent=FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
 		Scene logoutScene=new Scene(logoutParent, 450, 350);
 		Stage logoutStage=(Stage) Menu.getScene().getWindow();
