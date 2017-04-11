@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Album {
 	private String title;
@@ -29,7 +30,16 @@ public class Album {
 		return matches;
 	}
 	
-	/*public ArrayList<Photo> getPhotosByDate(String date){
+	public ArrayList<Photo> getPhotosByDate(Calendar date1, Calendar date2){
+		ArrayList<Photo> matches = new ArrayList<>();
 		
-	}*/
+		for(int i = 0; i < photos.size(); i++){
+			if((photos.get(i).getDate().after(date1) && photos.get(i).getDate().before(date2)) ||
+					(photos.get(i).getDate().compareTo(date1) == 0) || 
+					(photos.get(i).getDate().compareTo(date2) == 0)){
+				matches.add(photos.get(i));
+			}
+		}
+		return matches;
+	}
 }
