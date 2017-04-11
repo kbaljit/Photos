@@ -54,7 +54,7 @@ public class LoginController {
 				if(username.getText().equals(users.get(i).getUsername())){
 					if(password.getText().equals(users.get(i).getPassword())){
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserSystem.fxml")); 
-						loader.setController(new UserSystemController(users.get(i)));
+						loader.setController(new UserSystemController(users.get(i), this.library));
 					    TabPane root = (TabPane)loader.load();
 					    
 					    UserSystemController userController =  loader.getController();

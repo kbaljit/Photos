@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Album;
+import application.PhotoLibrary;
 import application.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,12 +18,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 public class UserSystemController {
 	private User user; 
+	private PhotoLibrary library;
 	
 	@FXML Button createAlbum;
 	@FXML Button deleteAlbum;
@@ -37,8 +40,9 @@ public class UserSystemController {
 	@FXML TextField dateRange;
 	@FXML Button Logout;
 	
-	public UserSystemController(User U){
+	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
+		this.library=library;
 		
 	}
 	
@@ -46,8 +50,11 @@ public class UserSystemController {
 	private void Logout(ActionEvent E) throws IOException{
 		//Save changes to disk
 		
-		Parent logoutParent=FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-		Scene logoutScene=new Scene(logoutParent, 450, 350);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml")); 
+		loader.setController(new LoginController(this.library));
+	    AnchorPane root = (AnchorPane)loader.load();
+	    LoginController loginController =  loader.getController();
+		Scene logoutScene=new Scene(root, 450, 350);
 		Stage logoutStage=(Stage) Logout.getScene().getWindow();
 		logoutStage.hide();
 	    logoutStage.setTitle("Photos App Login");
@@ -80,6 +87,7 @@ public class UserSystemController {
 	
 	public void start(Stage mainStage){ 
 		ArrayList<Album> orig=this.user.getAlbums();
+		albums.setText(this.user.getUsername());
 		tilePane=new TilePane();
 		tilePane.setOrientation(Orientation.HORIZONTAL);
 		tilePane.setHgap(8.0);
