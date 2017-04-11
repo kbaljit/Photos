@@ -55,7 +55,7 @@ public class LoginController {
 					if(password.getText().equals(users.get(i).getPassword())){
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserSystem.fxml")); 
 						loader.setController(new UserSystemController(users.get(i), this.library));
-					    TabPane root = (TabPane)loader.load();
+					    AnchorPane root = (AnchorPane)loader.load();
 					    
 					    UserSystemController userController =  loader.getController();
 						Scene userScene=new Scene(root, 700, 700);

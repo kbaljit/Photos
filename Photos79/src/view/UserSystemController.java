@@ -15,6 +15,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -38,7 +39,7 @@ public class UserSystemController {
 	@FXML TextField albumTitle;
 	@FXML TextField photoCount;
 	@FXML TextField dateRange;
-	@FXML Button Logout;
+	@FXML Label titleLabel;
 	
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
@@ -55,7 +56,7 @@ public class UserSystemController {
 	    AnchorPane root = (AnchorPane)loader.load();
 	    LoginController loginController =  loader.getController();
 		Scene logoutScene=new Scene(root, 450, 350);
-		Stage logoutStage=(Stage) Logout.getScene().getWindow();
+		Stage logoutStage=(Stage) logout.getScene().getWindow();
 		logoutStage.hide();
 	    logoutStage.setTitle("Photos App Login");
 	    logoutStage.setResizable(false);
@@ -87,7 +88,7 @@ public class UserSystemController {
 	
 	public void start(Stage mainStage){ 
 		ArrayList<Album> orig=this.user.getAlbums();
-		albums.setText(this.user.getUsername());
+		titleLabel.setText(this.user.getUsername()+" "+"Photos");
 		tilePane=new TilePane();
 		tilePane.setOrientation(Orientation.HORIZONTAL);
 		tilePane.setHgap(8.0);
