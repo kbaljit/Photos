@@ -14,9 +14,10 @@ import javafx.scene.layout.AnchorPane;
 public class Photos extends Application implements Serializable{
 		@Override
 		public void start(Stage primaryStage) throws Exception {
-				
+					 PhotoLibrary photoLib=PhotoLibrary.readApp();
+					 
 					 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
-					 loader.setController(new LoginController(new ArrayList<User>()));  
+					 loader.setController(new LoginController(photoLib));  
 				     AnchorPane root = (AnchorPane)loader.load();
 				     LoginController loginController =  loader.getController();
 				      

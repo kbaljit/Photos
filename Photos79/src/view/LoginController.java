@@ -2,6 +2,7 @@ package view;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import application.PhotoLibrary;
 import application.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +23,10 @@ public class LoginController {
 	@FXML Button Login;
 	@FXML TextField username;
 	@FXML PasswordField password;
-	private ArrayList<User> users;
+	private PhotoLibrary library;
 	
-	public LoginController(ArrayList<User> users){
-		this.users = users;
+	public LoginController(PhotoLibrary library){
+		this.library=library;
 	}
 	
 	@FXML
@@ -34,6 +35,7 @@ public class LoginController {
 			
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminSystem.fxml")); 
+			loader.setController(new AdminSystemController(this.library));
 		    AnchorPane root = (AnchorPane)loader.load();
 		    AdminSystemController adminController =  loader.getController();
 			
@@ -112,8 +114,9 @@ public class LoginController {
 		}
 		
 	}
+	public ArrayList<User> users;
 	public void start(Stage mainStage){    
-		
+		users=this.library.getUsers();
 		
 
 	}

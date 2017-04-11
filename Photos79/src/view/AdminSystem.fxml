@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AdminSystemController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="186.0" layoutY="48.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -64,7 +64,7 @@
                         <PieChart fx:id="AdminChart" title="Photo Percentage Chart" GridPane.rowIndex="1" />
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="List" layoutX="260.0" layoutY="129.0" mnemonicParsing="false" onAction="#listUsers" prefHeight="31.0" prefWidth="76.0" text="List" />
+                              <Button fx:id="List" layoutX="195.0" layoutY="122.0" mnemonicParsing="false" onAction="#listUsers" prefHeight="31.0" prefWidth="76.0" text="List" />
                            </children>
                         </AnchorPane>
                      </children>

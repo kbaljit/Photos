@@ -44,6 +44,9 @@ public class PhotoLibrary implements Serializable{
 	public ArrayList<User> getUsers(){
 		return users;
 	}
+	public void setUsers(ArrayList<User> U){
+		this.users=U;
+	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException{
 		PhotoLibrary photoLib = PhotoLibrary.readApp();

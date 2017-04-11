@@ -80,6 +80,7 @@ public class UserSystemController {
 	
 	public void start(Stage mainStage){ 
 		ArrayList<Album> orig=this.user.getAlbums();
+		tilePane=new TilePane();
 		tilePane.setOrientation(Orientation.HORIZONTAL);
 		tilePane.setHgap(8.0);
 		
