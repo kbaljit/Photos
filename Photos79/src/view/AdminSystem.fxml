@@ -64,7 +64,8 @@
                         <PieChart fx:id="AdminChart" title="Photo Percentage Chart" GridPane.rowIndex="1" />
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="List" layoutX="195.0" layoutY="122.0" mnemonicParsing="false" onAction="#listUsers" prefHeight="31.0" prefWidth="76.0" text="List" />
+                              <Button fx:id="List" layoutX="184.0" layoutY="122.0" mnemonicParsing="false" onAction="#listUsers" prefHeight="31.0" prefWidth="76.0" text="List" />
+                              <Button fx:id="Unlist" layoutX="284.0" layoutY="122.0" mnemonicParsing="false" onAction="#listUsers" text="Unlist" />
                            </children>
                         </AnchorPane>
                      </children>

@@ -56,6 +56,7 @@ public class LoginController {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserSystem.fxml")); 
 						loader.setController(new UserSystemController(users.get(i)));
 					    TabPane root = (TabPane)loader.load();
+					    
 					    UserSystemController userController =  loader.getController();
 						Scene userScene=new Scene(root, 700, 700);
 						Stage userStage=(Stage) ((Node) E.getSource()).getScene().getWindow();

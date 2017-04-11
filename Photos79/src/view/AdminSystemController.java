@@ -28,6 +28,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -37,6 +39,7 @@ public class AdminSystemController {
 	private PhotoLibrary library;
 	public String newUser;
 	public String newPassword;
+	public String deleteUser;
 	
 	@FXML ListView<String> userDisplay;
 	@FXML PieChart AdminChart;
@@ -46,6 +49,7 @@ public class AdminSystemController {
 	@FXML MenuItem About;
 	@FXML MenuBar Menu;
 	@FXML Button List;
+	@FXML Button Unlist;
 	
 	public AdminSystemController(PhotoLibrary library){
 		this.library=library;
@@ -55,8 +59,11 @@ public class AdminSystemController {
 	private void Logout(ActionEvent E) throws IOException{
 		//Save changes to disk
 		
-		Parent logoutParent=FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-		Scene logoutScene=new Scene(logoutParent, 450, 350);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml")); 
+		loader.setController(new LoginController(this.library));
+	    AnchorPane root = (AnchorPane)loader.load();
+	    LoginController loginController =  loader.getController();
+		Scene logoutScene=new Scene(root, 450, 350);
 		Stage logoutStage=(Stage) Menu.getScene().getWindow();
 		logoutStage.hide();
 	    logoutStage.setTitle("Photos App Login");
@@ -119,7 +126,8 @@ public class AdminSystemController {
 		} );
 	
 		Optional<Pair<String, String>> result = dialog.showAndWait();
-		
+		if(newUser==null || newPassword==null)
+			return;
 		for(int i=0; i<users.size();i++){
 			if(newUser.equals(users.get(i))){
 				Alert alert = new Alert(AlertType.ERROR);
@@ -130,25 +138,66 @@ public class AdminSystemController {
 	    		return;
 			}
 		}
-		
 		User U=new User(newUser, newPassword);
 		Users.add(U);
 		users.add(newUser);
+		newUser=null;
+		newPassword=null;
 		this.library.setUsers(Users);
 		PhotoLibrary.writeApp(this.library);
 	}
 	
 	@FXML 
 	private void deleteUser(ActionEvent E) throws IOException{
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("User Deletion");
+		dialog.setHeaderText("Delete Username");
+		dialog.setContentText("Please enter username to delete from System:");
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    deleteUser=result.get();
+		    if(deleteUser.isEmpty()){
+		    	Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error Dialog");
+	    		alert.setHeaderText("No username entered");
+	    		alert.setContentText("Please Enter a Username to delete");
+	    		alert.showAndWait();
+	    		return;
+		    	
+		    }
+		}
+		else{
+    		return;
+		}
+		
+		for(int i=0; i<Users.size();i++){
+			if(deleteUser.equals(Users.get(i).getUsername())){
+				Users.remove(i);
+				for(int j=0; j<users.size(); j++){
+					if(deleteUser.equals(users.get(j))){
+						users.remove(j);
+					}
+				}
+			}
+		}
+		
+		deleteUser=null;
+		this.library.setUsers(Users);
+		PhotoLibrary.writeApp(this.library);
+		
+		
 		
 	}
 	
 	@FXML
 	private void listUsers(ActionEvent E) throws IOException{
-		userDisplay.setItems(users);
-
-		
-	}
+		Button B=(Button)E.getSource();
+		if(B.getText().equals("List"))
+			userDisplay.setItems(users);
+		if(B.getText().equals("Unlist"))
+			userDisplay.setItems(null);
+		}
 	
 	@FXML
 	private void helpDialog(ActionEvent E) throws IOException{
