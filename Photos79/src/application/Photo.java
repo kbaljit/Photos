@@ -1,14 +1,13 @@
 package application;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import javafx.scene.image.Image;
 
-
-public class Photo {
+public class Photo implements Serializable{
 	private File image;
 	private Calendar date;
 	private String caption;
@@ -20,6 +19,7 @@ public class Photo {
 		Date d = new Date(image.lastModified());
 		date.setTime(d);
 		date.set(Calendar.MILLISECOND, 0);
+		tags = new ArrayList<>();
 	}
 	
 	public void setCaption(String caption){
