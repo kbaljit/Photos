@@ -1,14 +1,16 @@
 package application;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Album {
+public class Album implements Serializable{
 	private String title;
 	private ArrayList<Photo> photos;
 	
 	public Album(String title){
 		this.title = title;
+		photos = new ArrayList<>();
 	}
 	
 	public void addPhoto(Photo photo){
