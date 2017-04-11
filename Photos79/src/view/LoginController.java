@@ -52,13 +52,14 @@ public class LoginController {
 				if(username.getText().equals(users.get(i).getUsername())){
 					if(password.getText().equals(users.get(i).getPassword())){
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserSystem.fxml")); 
+						loader.setController(new UserSystemController(users.get(i)));
 					    TabPane root = (TabPane)loader.load();
 					    UserSystemController userController =  loader.getController();
 						Scene userScene=new Scene(root, 700, 700);
 						Stage userStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
 						userController.start(userStage);
 						userStage.hide();
-					    userStage.setTitle("User System");
+					    userStage.setTitle(users.get(i).getUsername());
 					    userStage.setResizable(false);
 						userStage.setScene(userScene);
 						userStage.show();
