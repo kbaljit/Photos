@@ -7,13 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -47,11 +47,12 @@ public class LoginController {
 			loginStage.show();
 		}
 		else if((!username.getText().isEmpty()) && (!password.getText().isEmpty())){
+			boolean userFound=false;
 			for(int i = 0; i < users.size(); i++){
 				if(username.getText().equals(users.get(i).getUsername())){
 					if(password.getText().equals(users.get(i).getPassword())){
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserSystem.fxml")); 
-					    AnchorPane root = (AnchorPane)loader.load();
+					    TabPane root = (TabPane)loader.load();
 					    UserSystemController userController =  loader.getController();
 						Scene userScene=new Scene(root, 700, 700);
 						Stage userStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
@@ -61,6 +62,7 @@ public class LoginController {
 					    userStage.setResizable(false);
 						userStage.setScene(userScene);
 						userStage.show();
+						userFound=true;
 					}else{
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.setTitle("Error Dialog");
@@ -71,12 +73,14 @@ public class LoginController {
 					}
 				}
 			}
+			if(!userFound){
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Incorrect Username");
 			alert.setContentText("There is no account associated with the username you have entered. Please try again.");
 
 			alert.showAndWait();
+			}
 		}
 		else if((!username.getText().isEmpty()) && (password.getText().isEmpty())){
 			for(int i = 0; i < users.size(); i++){
@@ -96,7 +100,8 @@ public class LoginController {
 			alert.setContentText("There is no account associated with the username you have entered. Please try again.");
 
 			alert.showAndWait();
-		}else if((username.getText().isEmpty()) && (password.getText().isEmpty())){
+		}
+		else if((username.getText().isEmpty()) && (password.getText().isEmpty())){
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Missing Username and Password");

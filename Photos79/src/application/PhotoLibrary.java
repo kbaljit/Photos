@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class PhotoLibrary implements Serializable{
 	private static final long serialVersionUID = -305922677898735351L;
 	private Admin admin;
-	private ArrayList<User> users;
+	ArrayList<User> users;
 	
 	public static final String storeDir = "dat";
 	public static final String storeFile = "users.dat";
@@ -31,10 +31,11 @@ public class PhotoLibrary implements Serializable{
 		return photoLib;
 	} 
 	
-	public static void main(String[] args) throws ClassNotFoundException, IOException{
+	public void main(String[] args) throws ClassNotFoundException, IOException{
 		PhotoLibrary photoLib = PhotoLibrary.readApp();
-		
 		//add users
+		User test=new User("test", "test");
+		users.add(test);
 		
 		writeApp(photoLib);
 	} 
