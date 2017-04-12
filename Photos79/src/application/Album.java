@@ -20,6 +20,9 @@ public class Album implements Serializable{
 	public String getTitle(){
 		return title;
 	}
+	public ArrayList<Photo> getPhotos(){
+		return this.photos;
+	}
 	
 	public ArrayList<Photo> getPhotosByTags(ArrayList<Tag> tags){
 		ArrayList<Photo> matches = new ArrayList<>();

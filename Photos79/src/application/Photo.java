@@ -21,7 +21,9 @@ public class Photo implements Serializable{
 		date.set(Calendar.MILLISECOND, 0);
 		tags = new ArrayList<>();
 	}
-	
+	public File getImage(){
+		return this.image;
+	}
 	public void setCaption(String caption){
 		this.caption = caption;
 	}
@@ -48,6 +50,9 @@ public class Photo implements Serializable{
 	
 	public ArrayList<Tag> getTags(){
 		return tags;
+	}
+	public void setTags(ArrayList<Tag> Tag){
+		this.tags=Tag;
 	}
 	
 	public boolean searchTag(Tag tag){
