@@ -3,8 +3,10 @@ package view;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,6 +80,7 @@ public class UserSystemController {
 	@FXML TabPane tabPane;
 	@FXML VBox VContainer;
 	@FXML ScrollPane S;
+	ImageView deleteImage;
 	
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
@@ -237,12 +240,12 @@ public class UserSystemController {
 			    	deleteAlbum.setVisible(false);
 			    	renameAlbum.setVisible(false);
 			    	Add.setVisible(true);
-			    	Delete.setVisible(true);
+			    	Delete.setVisible(false);
 			    	Search.setVisible(true);
-			    	Caption.setVisible(true);
-			    	Tag.setVisible(true);
-			    	Copy.setVisible(true);
-			    	Move.setVisible(true);
+			    	Caption.setVisible(false);
+			    	Tag.setVisible(false);
+			    	Copy.setVisible(false);
+			    	Move.setVisible(false);
 			    	SlideShow.setVisible(true);
 			    }
 			  }
@@ -268,12 +271,12 @@ public class UserSystemController {
 			    	deleteAlbum.setVisible(false);
 			    	renameAlbum.setVisible(false);
 			    	Add.setVisible(true);
-			    	Delete.setVisible(true);
+			    	Delete.setVisible(false);
 			    	Search.setVisible(true);
-			    	Caption.setVisible(true);
-			    	Tag.setVisible(true);
-			    	Copy.setVisible(true);
-			    	Move.setVisible(true);
+			    	Caption.setVisible(false);
+			    	Tag.setVisible(false);
+			    	Copy.setVisible(false);
+			    	Move.setVisible(false);
 			    	SlideShow.setVisible(true);
 			    }
 			  }
@@ -404,7 +407,7 @@ public class UserSystemController {
 				for(int j=0; j<this.user.getAlbums().get(i).getPhotos().size(); j++){
 				
 				Photo P=this.user.getAlbums().get(i).getPhotos().get(j);
-				ArrayList<Tag> Tag=P.getTags();
+				ArrayList<Tag> tag=P.getTags();
 				Calendar date=P.getDate();
 				String caption=P.getCaption();
 				File F=P.getImage();
@@ -419,6 +422,14 @@ public class UserSystemController {
 				ImageView iv=new ImageView(I);
 				iv.setFitHeight(200.0);
 				iv.setFitWidth(200.0);
+				iv.setOnMouseClicked(f -> {
+					deleteImage=iv;
+					Delete.setVisible(true);
+			    	Caption.setVisible(true);
+			    	Tag.setVisible(true);
+			    	Copy.setVisible(true);
+			    	Move.setVisible(true);
+				});
 				
 				TextField tv1 = new TextField(caption);
 				tv1.setEditable(false);
@@ -465,7 +476,12 @@ public class UserSystemController {
 				iv.setFitHeight(200.0);
 				iv.setFitWidth(200.0);
 				iv.setOnMouseClicked(e -> {
-					
+					deleteImage=iv;
+					Delete.setVisible(true);
+			    	Caption.setVisible(true);
+			    	Tag.setVisible(true);
+			    	Copy.setVisible(true);
+			    	Move.setVisible(true);
 				});
 				
 				TextField tv1 = new TextField(P.getCaption());
@@ -473,8 +489,6 @@ public class UserSystemController {
 				tv1.setOnMouseClicked(e -> {
 					
 				});
-				/*DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-				String Date = df.format(P.getDate());*/
 				TextField tv2 = new TextField(P.getDate().toString());
 				tv2.setEditable(false);
 				tv2.setOnMouseClicked(e -> {
@@ -495,6 +509,45 @@ public class UserSystemController {
 	
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
+		Album dAlbum=null;
+		for(int i=0;i<user.getAlbums().size();i++){
+			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
+				dAlbum=user.getAlbums().get(i);
+			}
+		}
+		
+		VBox dBox=(VBox)deleteImage.getParent();
+		StackPane dStack=(StackPane)dBox.getParent();
+		TilePane dTile=(TilePane)dStack.getParent();
+		for(int i=0; i<dTile.getChildren().size(); i++){
+			if(dStack.equals(dTile.getChildren().get(i))){
+				for(int j=0; j<user.getAlbums().size();j++){
+					if(dAlbum.equals(user.getAlbums().get(j))){
+						for(int k=0; k<user.getAlbums().get(j).getPhotos().size();k++){
+							Photo P=user.getAlbums().get(j).getPhotos().get(k);
+							File F=P.getImage();
+							BufferedImage bI=(BufferedImage)ImageIO.read(F);
+							Image I=convertBuffered(bI);
+							if(I.equals(deleteImage.getImage())){
+								user.getAlbums().get(j).getPhotos().remove(k);
+								for(int m=0; m<this.library.getUsers().size();m++){
+									if(user.getUsername().equals(this.library.getUsers().get(m).getUsername())){
+										this.library.getUsers().remove(m);
+										this.library.getUsers().add(user);
+										
+									}
+								}
+								PhotoLibrary.writeApp(this.library);
+							}
+						}
+						
+					}
+				}
+				
+				dTile.getChildren().remove(i);
+			}
+		}
 		
 		
 	}
@@ -600,12 +653,12 @@ public class UserSystemController {
 				    	deleteAlbum.setVisible(false);
 				    	renameAlbum.setVisible(false);
 				    	Add.setVisible(true);
-				    	Delete.setVisible(true);
+				    	Delete.setVisible(false);
 				    	Search.setVisible(true);
-				    	Caption.setVisible(true);
-				    	Tag.setVisible(true);
-				    	Copy.setVisible(true);
-				    	Move.setVisible(true);
+				    	Caption.setVisible(false);
+				    	Tag.setVisible(false);
+				    	Copy.setVisible(false);
+				    	Move.setVisible(false);
 				    	SlideShow.setVisible(true);
 				    }
 				  }
