@@ -10,8 +10,17 @@ import view.LoginController;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
-
+/**
+ * 
+ * @author Baljit Kaur
+ * @author Milan Patel
+ *
+ * An actual PhotoLibrary instance is created
+ */
 public class Photos extends Application implements Serializable{
+		/**
+		 * Starts the application with a Login control system
+		 */
 		@Override
 		public void start(Stage primaryStage) throws Exception {
 					 PhotoLibrary photoLib=PhotoLibrary.readApp();

@@ -18,17 +18,33 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-
+/**
+ * 
+ * @author Baljit Kaur
+ * @author Milan Patel
+ *
+ * Controls application's Login page
+ */
 public class LoginController {
 	@FXML Button Login;
 	@FXML TextField username;
 	@FXML PasswordField password;
 	private PhotoLibrary library;
 	
+	/**
+	 * Initializes an login control object for given photoLibrary
+	 * @param library PhotoLibrary instance
+	 */
 	public LoginController(PhotoLibrary library){
 		this.library=library;
 	}
 	
+	/**
+	 * Executes when login button is clicked
+	 * @param E
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	@FXML
 	private void buttonAction(ActionEvent E) throws IOException, ClassNotFoundException{
 		if(username.getText().equals("admin") && password.getText().equals("admin")){
