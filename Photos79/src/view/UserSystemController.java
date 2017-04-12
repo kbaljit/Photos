@@ -3,6 +3,7 @@ package view;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ import application.User;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -511,9 +514,11 @@ public class UserSystemController {
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
 		Album dAlbum=null;
+		int aLocation=0;
 		for(int i=0;i<user.getAlbums().size();i++){
 			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
 			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
+				aLocation=i;
 				dAlbum=user.getAlbums().get(i);
 			}
 		}
@@ -521,37 +526,27 @@ public class UserSystemController {
 		VBox dBox=(VBox)deleteImage.getParent();
 		StackPane dStack=(StackPane)dBox.getParent();
 		TilePane dTile=(TilePane)dStack.getParent();
+		int pLocation=0;
 		for(int i=0; i<dTile.getChildren().size(); i++){
 			if(dStack.equals(dTile.getChildren().get(i))){
-				for(int j=0; j<user.getAlbums().size();j++){
-					if(dAlbum.equals(user.getAlbums().get(j))){
-						for(int k=0; k<user.getAlbums().get(j).getPhotos().size();k++){
-							Photo P=user.getAlbums().get(j).getPhotos().get(k);
-							File F=P.getImage();
-							BufferedImage bI=(BufferedImage)ImageIO.read(F);
-							Image I=convertBuffered(bI);
-							if(I.equals(deleteImage.getImage())){
-								user.getAlbums().get(j).getPhotos().remove(k);
-								for(int m=0; m<this.library.getUsers().size();m++){
-									if(user.getUsername().equals(this.library.getUsers().get(m).getUsername())){
-										this.library.getUsers().remove(m);
-										this.library.getUsers().add(user);
-										
-									}
-								}
-								PhotoLibrary.writeApp(this.library);
-							}
-						}
-						
-					}
-				}
-				
+				pLocation=i;
 				dTile.getChildren().remove(i);
 			}
 		}
-		
-		
-	}
+				
+				user.getAlbums().get(aLocation).getPhotos().remove(pLocation);
+	    		for(int j=0; j<this.library.getUsers().size();j++){
+	    			if(user.getUsername().equals(this.library.getUsers().get(j).getUsername())){
+	    				this.library.getUsers().remove(j);
+	    				this.library.getUsers().add(user);
+	    				
+	    			}
+	    		}
+	    		
+	    		PhotoLibrary.writeApp(this.library);
+	    		
+	    	}
+	
 	
 	public Image convertBuffered(BufferedImage image){
 		WritableImage wi=new WritableImage(image.getWidth(), image.getHeight());
