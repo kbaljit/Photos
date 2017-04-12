@@ -23,6 +23,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -43,6 +44,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 public class UserSystemController {
 	private User user; 
@@ -136,44 +138,61 @@ public class UserSystemController {
 		
 		Album album = new Album(albumTitle);
 		user.addAlbum(album);
+		
 		for(int i=0; i<this.library.getUsers().size();i++){
 			if(user.getUsername().equals(this.library.getUsers().get(i).getUsername())){
 				this.library.getUsers().remove(i);
 				this.library.getUsers().add(user);
 			}
 		}
-		PhotoLibrary.writeApp(this.library);
 		
+		PhotoLibrary.writeApp(this.library);
+	
+		StackPane sp = new StackPane();
+		sp.setPrefSize(200, 150);
+		VBox vb = new VBox();
+		vb.setPrefSize(200, 150);
+		vb.setStyle("-fx-background-color: white;");
 		tilePane.setOnMouseClicked(e -> {
 			deleteAlbum.setVisible(false);
 			renameAlbum.setVisible(false);
 		});
-		
-		StackPane sp = new StackPane();
-		VBox vb = new VBox();
 		TextField tv1 = new TextField();
+		tv1.setPrefSize(200, 50);
+		tv1.setText(albumTitle.toUpperCase().charAt(0) + albumTitle.substring(1));
+		tv1.setAlignment(Pos.CENTER);
+		tv1.setFont(Font.font ("System", 24));
 		tv1.setEditable(false);
+		tv1.setStyle("-fx-background-color: transparent;");
 		tv1.setOnMouseClicked(e -> {
 			deleteAlbum.setVisible(true);
 			renameAlbum.setVisible(true);
+			lastClicked = (StackPane)tv1.getParent().getParent();
 		});
 		
-		tv1.setText(albumTitle);
 		TextField tv2 = new TextField("0 Photos");
+		tv2.setAlignment(Pos.CENTER);
+		tv2.setPrefSize(200, 50);
 		tv2.setEditable(false);
+		tv2.setStyle("-fx-background-color: transparent;");
 		tv2.setOnMouseClicked(e -> {
 			deleteAlbum.setVisible(true);
 			renameAlbum.setVisible(true);
+			lastClicked = (StackPane)tv1.getParent().getParent();
 		});
-		
 		TextField tv3 = new TextField("Date Range");
-		tv3.setEditable(false);
+		tv3.setAlignment(Pos.CENTER);
+		tv3.setPrefSize(200, 50);
 		tv3.setOnMouseClicked(e -> {
 			deleteAlbum.setVisible(true);
 			renameAlbum.setVisible(true);
+			lastClicked = (StackPane)tv1.getParent().getParent();
 		});
 		
+		tv3.setEditable(false);
+		tv3.setStyle("-fx-background-color: transparent;");
 		Button button = new Button("OPEN");
+		button.setPrefSize(200, 30);
 		button.setOnAction(e -> {
 			try {
 				openAlbum(e);
@@ -181,12 +200,47 @@ public class UserSystemController {
 				e1.printStackTrace();
 			}
 		});
+		
 		vb.getChildren().add(tv1);
 		vb.getChildren().add(tv2);
 		vb.getChildren().add(tv3);
 		vb.getChildren().add(button);
 		sp.getChildren().add(vb);
 		tilePane.getChildren().add(sp);
+		PhotoLibrary.writeApp(this.library);
+		
+		Platform.runLater(() -> sp.requestFocus());
+		Platform.runLater(() -> vb.requestFocus());
+		Platform.runLater(() -> tilePane.requestFocus());
+		
+		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+			  @Override public void changed(ObservableValue<? extends Tab> tab, Tab oldTab, Tab newTab) {
+			    if(newTab.equals(albums)){
+			    	createAlbum.setVisible(true);
+			    	Add.setVisible(false);
+			    	Delete.setVisible(false);
+			    	Search.setVisible(false);
+			    	Caption.setVisible(false);
+			    	Tag.setVisible(false);
+			    	Copy.setVisible(false);
+			    	Move.setVisible(false);
+			    	SlideShow.setVisible(false);
+			    }
+			    else{
+			    	createAlbum.setVisible(false);
+			    	deleteAlbum.setVisible(false);
+			    	renameAlbum.setVisible(false);
+			    	Add.setVisible(true);
+			    	Delete.setVisible(true);
+			    	Search.setVisible(true);
+			    	Caption.setVisible(true);
+			    	Tag.setVisible(true);
+			    	Copy.setVisible(true);
+			    	Move.setVisible(true);
+			    	SlideShow.setVisible(true);
+			    }
+			  }
+			});
 		
 		Platform.runLater(() -> tilePane.requestFocus());
 	}
@@ -209,14 +263,22 @@ public class UserSystemController {
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
-		alert.setHeaderText("Album" + title + " will be deleted.");
+		alert.setHeaderText("Album " + title + " will be deleted.");
 		alert.setContentText("Are you sure you want to delete this album?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK){
 		    user.deleteAlbumByIndex(item);
+		    deleteAlbum.setVisible(false);
+			renameAlbum.setVisible(false);
 		    PhotoLibrary.writeApp(this.library);
 		    tilePane.getChildren().remove(item);
+		    
+		    for(int i = 0; i < tabPane.getTabs().size(); i++){
+		    	if(tabPane.getTabs().get(i).getText().equals(title)){
+		    		tabPane.getTabs().remove(i);
+		    	}
+		    }
 		    Platform.runLater(() -> tilePane.requestFocus());
 		} else {
 			Platform.runLater(() -> tilePane.requestFocus());
@@ -293,7 +355,7 @@ public class UserSystemController {
 		TilePane Tile=new TilePane();
 		root.setContent(Tile);
 		tab.setContent(root);
-		Tile.setStyle("-fx-background-color: #009688");
+		Tile.setStyle("-fx-background-color: teal;");
 		
 		tabPane.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -339,7 +401,6 @@ public class UserSystemController {
 				
 			}
 		}
-		
 	}
 	
 	@FXML
@@ -416,14 +477,22 @@ public class UserSystemController {
 		
 		for(int i = 0; i < user.getAlbums().size(); i++){
 			StackPane sp = new StackPane();
+			sp.setPrefSize(200, 150);
 			VBox vb = new VBox();
+			vb.setPrefSize(200, 150);
+			vb.setStyle("-fx-background-color: white;");
 			tilePane.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(false);
 				renameAlbum.setVisible(false);
 			});
 			TextField tv1 = new TextField();
-			tv1.setText(user.getAlbums().get(i).getTitle());
+			tv1.setPrefSize(200, 50);
+			tv1.setText(user.getAlbums().get(i).getTitle().toUpperCase().charAt(0) + 
+					user.getAlbums().get(i).getTitle().substring(1));
+			tv1.setAlignment(Pos.CENTER);
+			tv1.setFont(Font.font ("System", 24));
 			tv1.setEditable(false);
+			tv1.setStyle("-fx-background-color: transparent;");
 			tv1.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
@@ -431,13 +500,18 @@ public class UserSystemController {
 			});
 			
 			TextField tv2 = new TextField(user.getAlbums().get(i).getNumPhotos() + " Photos");
+			tv2.setAlignment(Pos.CENTER);
+			tv2.setPrefSize(200, 50);
 			tv2.setEditable(false);
+			tv2.setStyle("-fx-background-color: transparent;");
 			tv2.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
 				lastClicked = (StackPane)tv1.getParent().getParent();
 			});
 			TextField tv3 = new TextField("Date Range");
+			tv3.setAlignment(Pos.CENTER);
+			tv3.setPrefSize(200, 50);
 			tv3.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
@@ -448,7 +522,9 @@ public class UserSystemController {
 				tv3 = new TextField(user.getAlbums().get(i).dateRange());
 			}
 			tv3.setEditable(false);
+			tv3.setStyle("-fx-background-color: transparent;");
 			Button button = new Button("OPEN");
+			button.setPrefSize(200, 30);
 			button.setOnAction(e -> {
 				try {
 					openAlbum(e);
@@ -463,6 +539,8 @@ public class UserSystemController {
 			sp.getChildren().add(vb);
 			tilePane.getChildren().add(sp);
 			
+			Platform.runLater(() -> sp.requestFocus());
+			Platform.runLater(() -> vb.requestFocus());
 			Platform.runLater(() -> tilePane.requestFocus());
 			
 			tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
@@ -494,8 +572,5 @@ public class UserSystemController {
 				  }
 				});
 		}
-
-	
-
 	}
 }
