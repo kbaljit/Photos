@@ -65,6 +65,7 @@ public class AdminSystemController {
 	    LoginController loginController =  loader.getController();
 		Scene logoutScene=new Scene(root, 600, 500);
 		Stage logoutStage=(Stage) Menu.getScene().getWindow();
+		loginController.start(logoutStage);
 		logoutStage.hide();
 	    logoutStage.setTitle("Photos App Login");
 	    logoutStage.setResizable(false);

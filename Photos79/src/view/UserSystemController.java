@@ -45,6 +45,12 @@ public class UserSystemController {
 	@FXML Button deleteAlbum;
 	@FXML Button Add;
 	@FXML Button Delete;
+	@FXML Button Search;
+	@FXML Button Caption;
+	@FXML Button Tag;
+	@FXML Button Copy;
+	@FXML Button Move;
+	@FXML Button SlideShow;
 	@FXML Button renameAlbum;
 	@FXML Button logout;
 	@FXML Tab albums;
@@ -74,6 +80,7 @@ public class UserSystemController {
 	    LoginController loginController =  loader.getController();
 		Scene logoutScene=new Scene(root, 600, 500);
 		Stage logoutStage=(Stage) logout.getScene().getWindow();
+		loginController.start(logoutStage);
 		logoutStage.hide();
 	    logoutStage.setTitle("Photos App Login");
 	    logoutStage.setResizable(false);
@@ -144,6 +151,21 @@ public class UserSystemController {
 	}
 	
 	@FXML 
+	private void selectTab() throws IOException{
+		createAlbum.setVisible(false);
+		deleteAlbum.setVisible(false);
+		renameAlbum.setVisible(false);
+		Add.setVisible(true);
+		Delete.setVisible(true);
+		Search.setVisible(true);
+		Caption.setVisible(true);
+		Tag.setVisible(true);
+		Copy.setVisible(true);
+		Move.setVisible(true);
+		SlideShow.setVisible(true);
+	}
+	
+	@FXML 
 	private void deleteAlbum(ActionEvent E) throws IOException{
 		TextField tf = new TextField();
 		//get title text field
@@ -174,7 +196,6 @@ public class UserSystemController {
     		dialog.setHeaderText("Please Enter Album Title");
     		result = dialog.showAndWait();
 		}
-		
         if (result.isPresent()) {
             albumTitle = result.get();
         }
@@ -198,35 +219,17 @@ public class UserSystemController {
 	}
 	
 	@FXML
-	private void openAlbum(){
-		
-	}
-	
-	@FXML
-	private void uploadPicture(ActionEvent E) throws IOException{
-		
-	}
-	
-	@FXML
-	private void deletePicture(ActionEvent E) throws IOException{
-		
-	}
-	
-	@FXML
-	private void selectAlbum(ActionEvent E) throws IOException{
+	private void openAlbum(ActionEvent e) throws IOException{
 		Tab tab=new Tab();
-		Button b=(Button)E.getSource();
+		Button b=(Button)e.getSource();
 		VBox vb=(VBox) b.getParent();
 		TextField AlbumField=(TextField) vb.getChildren().get(0);
 		String AlbumName=AlbumField.getText();
 		tab.setText(AlbumName);
-		
-		AnchorPane anchor=new AnchorPane();
-		tab.setContent(anchor);
 		TilePane tile=new TilePane();
-		anchor.getChildren().add(tile);
-		StackPane stack=new StackPane();
-		tile.getChildren().add(stack);
+	
+		tab.setContent(tile);
+		tile.setStyle("-fx-background-color: #009688");
 		
 		tabPane.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -235,8 +238,6 @@ public class UserSystemController {
 		Add.setVisible(true);
 		Delete.setVisible(true);*/
 		selectionModel.select(tab);
-		
-		
 		for(int i=0; i<this.user.getAlbums().size(); i++){
 			if(AlbumName.equals(this.user.getAlbums().get(i))){
 				for(int j=0; j<this.user.getAlbums().get(i).getPhotos().size(); j++){
@@ -255,6 +256,7 @@ public class UserSystemController {
 						pw.setArgb(k, l, image.getRGB(k, l));
 					}
 				}
+				StackPane stack=new StackPane();
 				ImageView iv=new ImageView(wi);
 				stack.getChildren().add(iv);
 				
@@ -264,6 +266,15 @@ public class UserSystemController {
 			}
 		}
 		
+	}
+	
+	@FXML
+	private void uploadPicture(ActionEvent E) throws IOException{
+		
+	}
+	
+	@FXML
+	private void deletePicture(ActionEvent E) throws IOException{
 		
 	}
 	
@@ -305,7 +316,11 @@ public class UserSystemController {
 			tv3.setEditable(false);
 			Button button = new Button("OPEN");
 			button.setOnAction(e -> {
-				openAlbum();
+				try {
+					openAlbum(e);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			});
 			vb.getChildren().add(tv1);
 			vb.getChildren().add(tv2);
@@ -316,6 +331,13 @@ public class UserSystemController {
 			tilePane.getChildren().add(sp);
 			
 			Platform.runLater(() -> tilePane.requestFocus());
+			
+			albums.setOnSelectionChanged(e->{try {
+				selectTab();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}});
 		}
 
 	
