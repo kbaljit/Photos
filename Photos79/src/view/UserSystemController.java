@@ -28,12 +28,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -134,6 +136,12 @@ public class UserSystemController {
 		
 		Album album = new Album(albumTitle);
 		user.addAlbum(album);
+		for(int i=0; i<this.library.getUsers().size();i++){
+			if(user.getUsername().equals(this.library.getUsers().get(i).getUsername())){
+				this.library.getUsers().remove(i);
+				this.library.getUsers().add(user);
+			}
+		}
 		PhotoLibrary.writeApp(this.library);
 		
 		tilePane.setOnMouseClicked(e -> {
@@ -273,41 +281,58 @@ public class UserSystemController {
 	
 	@FXML
 	private void openAlbum(ActionEvent e) throws IOException{
+		ScrollPane root=new ScrollPane();
+		root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		Tab tab=new Tab();
 		Button b=(Button)e.getSource();
-		VBox vb=(VBox) b.getParent();
-		TextField AlbumField=(TextField) vb.getChildren().get(0);
+		VBox v=(VBox) b.getParent();
+		TextField AlbumField=(TextField) v.getChildren().get(0);
 		String AlbumName=AlbumField.getText();
 		tab.setText(AlbumName);
-		TilePane tile=new TilePane();
-	
-		tab.setContent(tile);
-		tile.setStyle("-fx-background-color: #009688");
+		TilePane Tile=new TilePane();
+		root.setContent(Tile);
+		tab.setContent(root);
+		Tile.setStyle("-fx-background-color: #009688");
 		
 		tabPane.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
 		selectionModel.select(tab);
 		for(int i=0; i<this.user.getAlbums().size(); i++){
-			if(AlbumName.equals(this.user.getAlbums().get(i))){
+			if(AlbumName.equals(this.user.getAlbums().get(i).getTitle())){
 				for(int j=0; j<this.user.getAlbums().get(i).getPhotos().size(); j++){
 				
 				Photo P=this.user.getAlbums().get(i).getPhotos().get(j);
 				ArrayList<Tag> Tag=P.getTags();
 				Calendar date=P.getDate();
 				String caption=P.getCaption();
-				
 				File F=P.getImage();
 				BufferedImage image=ImageIO.read(F);
-				WritableImage wi=new WritableImage(image.getWidth(), image.getHeight());
-				PixelWriter pw=wi.getPixelWriter();
-				for(int k=0; k<image.getWidth();k++){
-					for(int l=0; l<image.getHeight(); l++){
-						pw.setArgb(k, l, image.getRGB(k, l));
-					}
-				}
-				StackPane stack=new StackPane();
-				ImageView iv=new ImageView(wi);
-				stack.getChildren().add(iv);
+				Image I=convertBuffered(image);
+				
+				ScrollPane scroll=(ScrollPane) tabPane.getSelectionModel().getSelectedItem().getContent();
+				TilePane tile=(TilePane) scroll.getContent();
+				
+				StackPane sp = new StackPane();
+				VBox vb = new VBox();
+				ImageView iv=new ImageView(I);
+				iv.setFitHeight(200.0);
+				iv.setFitWidth(200.0);
+				
+				TextField tv1 = new TextField(caption);
+				tv1.setEditable(false);
+				
+				TextField tv2 = new TextField(date.toString());
+				tv2.setEditable(false);
+				vb.getChildren().add(iv);
+				vb.getChildren().add(tv1);
+				vb.getChildren().add(tv2);
+				sp.getChildren().add(vb);
+				tile.getChildren().add(sp);
+				Platform.runLater(() -> tilePane.requestFocus());
+				
+				
+				
 				
 				}
 				
@@ -321,12 +346,68 @@ public class UserSystemController {
 	private void uploadPicture(ActionEvent E) throws IOException{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
+		Stage stage=new Stage();
+		File f=fileChooser.showOpenDialog(stage);
+		BufferedImage B=ImageIO.read(f);
+		Image I=convertBuffered(B);
+		Photo P=new Photo(f);
+		String Album=tabPane.getSelectionModel().getSelectedItem().getText();
+		for(int i=0; i<user.getAlbums().size();i++){
+			if(Album.equals(user.getAlbums().get(i).getTitle())){
+				user.getAlbums().get(i).addPhoto(P);
+				ScrollPane scroll=(ScrollPane) tabPane.getSelectionModel().getSelectedItem().getContent();
+				TilePane tile=(TilePane) scroll.getContent();
+				tile.setOnMouseClicked(e -> {
+					
+				});
+				
+				StackPane sp = new StackPane();
+				VBox vb = new VBox();
+				ImageView iv=new ImageView(I);
+				iv.setFitHeight(200.0);
+				iv.setFitWidth(200.0);
+				iv.setOnMouseClicked(e -> {
+					
+				});
+				
+				TextField tv1 = new TextField(P.getCaption());
+				tv1.setEditable(false);
+				tv1.setOnMouseClicked(e -> {
+					
+				});
+				
+				TextField tv2 = new TextField(P.getDate()+"");
+				tv2.setEditable(false);
+				tv2.setOnMouseClicked(e -> {
+					
+				});
+				vb.getChildren().add(iv);
+				vb.getChildren().add(tv1);
+				vb.getChildren().add(tv2);
+				sp.getChildren().add(vb);
+				tile.getChildren().add(sp);
+				Platform.runLater(() -> tilePane.requestFocus());
+				
+			}
+		}
+		
 		
 	}
 	
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
 		
+	}
+	
+	public Image convertBuffered(BufferedImage image){
+		WritableImage wi=new WritableImage(image.getWidth(), image.getHeight());
+		PixelWriter pw=wi.getPixelWriter();
+		for(int k=0; k<image.getWidth();k++){
+			for(int l=0; l<image.getHeight(); l++){
+				pw.setArgb(k, l, image.getRGB(k, l));
+			}
+		}
+		return wi;
 	}
 	
 	public void start(Stage mainStage){ 
