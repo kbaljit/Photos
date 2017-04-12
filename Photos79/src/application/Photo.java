@@ -36,6 +36,11 @@ public class Photo implements Serializable{
 		return date;
 	}
 	
+	public String getDateString(){
+		return (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" +
+				date.get(Calendar.YEAR) + "";
+	}
+	
 	public boolean addTag(Tag tag){
 		//check if tag already exists
 		for(int i = 0; i < tags.size(); i++){
