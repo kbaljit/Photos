@@ -26,44 +26,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TilePane hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                 <children>
-                                    <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: black;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../Pictures/flower.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
-                                             <children>
-                                                <TextField fx:id="albumTitle" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Sample Album">
-                                                   <font>
-                                                      <Font name="System Bold" size="24.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <Blend />
-                                                   </effect>
-                                                </TextField>
-                                                <TextField fx:id="photoCount" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="10 Photos">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </TextField>
-                                                <TextField fx:id="dateRange" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Mar 1, 2017 - Mar 10, 2017">
-                                                   <effect>
-                                                      <Blend />
-                                                   </effect>
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </TextField>
-                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="207.0" text="OPEN" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </StackPane>
-                                 </children>
+                              <TilePane fx:id="tilePane" hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" style="-fx-background-color: teal;">
                               </TilePane>
                            </children>
                         </AnchorPane>
@@ -78,12 +41,12 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox layoutX="562.0" layoutY="33.0" prefHeight="25.0" prefWidth="351.0" spacing="30.0" AnchorPane.rightAnchor="11.0">
+      <HBox layoutX="562.0" layoutY="33.0" prefHeight="25.0" prefWidth="351.0" spacing="10.0" AnchorPane.rightAnchor="11.0">
          <children>
-            <Button fx:id="deleteAlbum" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
-            <Button fx:id="createAAlbum" mnemonicParsing="false" prefHeight="31.0" prefWidth="145.0" text="Create Album" />
+            <Button fx:id="deleteAlbum" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
+            <Button fx:id="renameAlbum" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
+            <Button fx:id="createAAlbum" mnemonicParsing="false" onAction="#createAlbum" prefHeight="31.0" prefWidth="110.0" text="Create Album" />
             <Button fx:id="logout" mnemonicParsing="false" onAction="#Logout" prefHeight="31.0" prefWidth="91.0" text="Logout" />
-            <Button fx:id="renameAlbum" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
          </children>
       </HBox>
       <TextField layoutX="10.0" layoutY="600.0" prefHeight="25.0" prefWidth="800.0" text="Status Bar" />

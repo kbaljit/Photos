@@ -22,7 +22,7 @@ public class Photos extends Application implements Serializable{
 				     LoginController loginController =  loader.getController();
 				      
 				     loginController.start(primaryStage);
-				     Scene scene = new Scene(root, 450, 350);
+				     Scene scene = new Scene(root, 600, 500);
 				     primaryStage.setScene(scene);
 				     primaryStage.setTitle("Photos App Login");
 				     primaryStage.setResizable(false);

@@ -21,6 +21,10 @@ public class Album implements Serializable{
 		return title;
 	}
 	
+	public int getNumPhotos(){
+		return photos.size();
+	}
+	
 	public ArrayList<Photo> getPhotosByTags(ArrayList<Tag> tags){
 		ArrayList<Photo> matches = new ArrayList<>();
 		
@@ -43,5 +47,23 @@ public class Album implements Serializable{
 			}
 		}
 		return matches;
+	}
+
+	public void setTitle(String text) {
+		this.title = text;
+	}
+	
+	public String dateRange(){
+		Calendar min = photos.get(0).getDate();
+		Calendar max = photos.get(0).getDate();
+		for(int i = 1; i < photos.size(); i++){
+			if(photos.get(i).getDate().before(min)){
+				min = photos.get(i).getDate();
+			}
+			if(photos.get(i).getDate().after(max)){
+				max = photos.get(i).getDate();
+			}
+		}
+		return min.toString() + ", " + max.toString();
 	}
 }
