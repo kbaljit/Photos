@@ -5,6 +5,8 @@ import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -40,6 +42,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -71,6 +74,8 @@ public class UserSystemController {
 	@FXML TextField dateRange;
 	@FXML Label titleLabel;
 	@FXML TabPane tabPane;
+	@FXML VBox VContainer;
+	@FXML ScrollPane S;
 	
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
@@ -140,6 +145,7 @@ public class UserSystemController {
 			if(user.getUsername().equals(this.library.getUsers().get(i).getUsername())){
 				this.library.getUsers().remove(i);
 				this.library.getUsers().add(user);
+				
 			}
 		}
 		PhotoLibrary.writeApp(this.library);
@@ -189,6 +195,35 @@ public class UserSystemController {
 		tilePane.getChildren().add(sp);
 		
 		Platform.runLater(() -> tilePane.requestFocus());
+		
+		tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+			  @Override public void changed(ObservableValue<? extends Tab> tab, Tab oldTab, Tab newTab) {
+			    if(newTab.equals(albums)){
+			    	createAlbum.setVisible(true);
+			    	Add.setVisible(false);
+			    	Delete.setVisible(false);
+			    	Search.setVisible(false);
+			    	Caption.setVisible(false);
+			    	Tag.setVisible(false);
+			    	Copy.setVisible(false);
+			    	Move.setVisible(false);
+			    	SlideShow.setVisible(false);
+			    }
+			    else{
+			    	createAlbum.setVisible(false);
+			    	deleteAlbum.setVisible(false);
+			    	renameAlbum.setVisible(false);
+			    	Add.setVisible(true);
+			    	Delete.setVisible(true);
+			    	Search.setVisible(true);
+			    	Caption.setVisible(true);
+			    	Tag.setVisible(true);
+			    	Copy.setVisible(true);
+			    	Move.setVisible(true);
+			    	SlideShow.setVisible(true);
+			    }
+			  }
+			});
 	}
 	
 	@FXML 
@@ -282,7 +317,8 @@ public class UserSystemController {
 	@FXML
 	private void openAlbum(ActionEvent e) throws IOException{
 		ScrollPane root=new ScrollPane();
-		root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	
+		root.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		Tab tab=new Tab();
 		Button b=(Button)e.getSource();
@@ -293,7 +329,7 @@ public class UserSystemController {
 		TilePane Tile=new TilePane();
 		root.setContent(Tile);
 		tab.setContent(root);
-		Tile.setStyle("-fx-background-color: #009688");
+		VBox.setVgrow(Tile, Priority.ALWAYS);
 		
 		tabPane.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -330,10 +366,6 @@ public class UserSystemController {
 				sp.getChildren().add(vb);
 				tile.getChildren().add(sp);
 				Platform.runLater(() -> tilePane.requestFocus());
-				
-				
-				
-				
 				}
 				
 				
@@ -355,6 +387,8 @@ public class UserSystemController {
 		for(int i=0; i<user.getAlbums().size();i++){
 			if(Album.equals(user.getAlbums().get(i).getTitle())){
 				user.getAlbums().get(i).addPhoto(P);
+				PhotoLibrary.writeApp(this.library);
+				
 				ScrollPane scroll=(ScrollPane) tabPane.getSelectionModel().getSelectedItem().getContent();
 				TilePane tile=(TilePane) scroll.getContent();
 				tile.setOnMouseClicked(e -> {
@@ -375,8 +409,9 @@ public class UserSystemController {
 				tv1.setOnMouseClicked(e -> {
 					
 				});
-				
-				TextField tv2 = new TextField(P.getDate()+"");
+				/*DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+				String Date = df.format(P.getDate());*/
+				TextField tv2 = new TextField(P.getDate().toString());
 				tv2.setEditable(false);
 				tv2.setOnMouseClicked(e -> {
 					
@@ -397,6 +432,7 @@ public class UserSystemController {
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
 		
+		
 	}
 	
 	public Image convertBuffered(BufferedImage image){
@@ -413,7 +449,7 @@ public class UserSystemController {
 	public void start(Stage mainStage){ 
 		ArrayList<Album> orig=this.user.getAlbums();
 		titleLabel.setText(this.user.getUsername().toUpperCase().charAt(0) + this.user.getUsername().substring(1) +"'s "+"Photos");
-		
+		VBox.setVgrow(tilePane, Priority.ALWAYS);
 		for(int i = 0; i < user.getAlbums().size(); i++){
 			StackPane sp = new StackPane();
 			VBox vb = new VBox();
