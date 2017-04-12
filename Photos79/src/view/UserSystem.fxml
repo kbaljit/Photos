@@ -5,22 +5,28 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.71" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane layoutX="232.0" layoutY="65.0" prefHeight="535.0" prefWidth="800.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="65.0">
          <items>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="albums" closable="false" text="Albums">
+                <Tab closable="false" text="Albums">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TilePane fx:id="tilePane" hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" style="-fx-background-color: teal;" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <TilePane fx:id="tilePane" hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" style="-fx-background-color: teal;">
                               </TilePane>
                            </children>
                         </AnchorPane>
@@ -39,17 +45,10 @@
          <children>
             <Button fx:id="deleteAlbum" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
             <Button fx:id="renameAlbum" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
-            <Button fx:id="createAlbum" mnemonicParsing="false" onAction="#createAlbum" prefHeight="31.0" prefWidth="110.0" text="Create Album" />
+            <Button fx:id="createAAlbum" mnemonicParsing="false" onAction="#createAlbum" prefHeight="31.0" prefWidth="110.0" text="Create Album" />
             <Button fx:id="logout" mnemonicParsing="false" onAction="#Logout" prefHeight="31.0" prefWidth="91.0" text="Logout" />
          </children>
       </HBox>
-      <Button layoutX="14.0" layoutY="593.0" mnemonicParsing="false" text="Add Photo" visible="false" />
-      <Button layoutX="105.0" layoutY="593.0" mnemonicParsing="false" text="Delete Photo" visible="false" />
-      <Button layoutX="212.0" layoutY="593.0" mnemonicParsing="false" text="Search" visible="false" />
-      <Button layoutX="277.0" layoutY="593.0" mnemonicParsing="false" text="Caption" visible="false" />
-      <Button layoutX="383.0" layoutY="593.0" mnemonicParsing="false" text="Copy" visible="false" />
-      <Button layoutX="438.0" layoutY="593.0" mnemonicParsing="false" text="Move" visible="false" />
-      <Button layoutX="496.0" layoutY="593.0" mnemonicParsing="false" text="SlidShow" visible="false" />
-      <Button layoutX="342.0" layoutY="593.0" mnemonicParsing="false" text="Tag" visible="false" />
+      <TextField layoutX="10.0" layoutY="600.0" prefHeight="25.0" prefWidth="800.0" text="Status Bar" />
    </children>
 </AnchorPane>

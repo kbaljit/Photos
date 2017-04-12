@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -40,6 +41,7 @@ import javafx.scene.layout.VBox;
 public class UserSystemController {
 	private User user; 
 	private PhotoLibrary library;
+	private StackPane lastClicked;
 	
 	@FXML Button createAlbum;
 	@FXML Button deleteAlbum;
@@ -86,7 +88,7 @@ public class UserSystemController {
 	    logoutStage.setResizable(false);
 		logoutStage.setScene(logoutScene);
 		logoutStage.show();
-		
+		PhotoLibrary.writeApp(this.library);
 	}
 	
 	@FXML
@@ -130,20 +132,47 @@ public class UserSystemController {
 		user.addAlbum(album);
 		PhotoLibrary.writeApp(this.library);
 		
+		tilePane.setOnMouseClicked(e -> {
+			deleteAlbum.setVisible(false);
+			renameAlbum.setVisible(false);
+		});
 		
 		StackPane sp = new StackPane();
-		ImageView iv = new ImageView();
 		VBox vb = new VBox();
 		TextField tv1 = new TextField();
+		tv1.setEditable(false);
+		tv1.setOnMouseClicked(e -> {
+			deleteAlbum.setVisible(true);
+			renameAlbum.setVisible(true);
+		});
+		
 		tv1.setText(albumTitle);
 		TextField tv2 = new TextField("0 Photos");
+		tv2.setEditable(false);
+		tv2.setOnMouseClicked(e -> {
+			deleteAlbum.setVisible(true);
+			renameAlbum.setVisible(true);
+		});
+		
 		TextField tv3 = new TextField("Date Range");
+		tv3.setEditable(false);
+		tv3.setOnMouseClicked(e -> {
+			deleteAlbum.setVisible(true);
+			renameAlbum.setVisible(true);
+		});
+		
 		Button button = new Button("OPEN");
+		button.setOnAction(e -> {
+			try {
+				openAlbum(e);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
 		vb.getChildren().add(tv1);
 		vb.getChildren().add(tv2);
 		vb.getChildren().add(tv3);
 		vb.getChildren().add(button);
-		sp.getChildren().add(iv);
 		sp.getChildren().add(vb);
 		tilePane.getChildren().add(sp);
 		
@@ -167,20 +196,39 @@ public class UserSystemController {
 	
 	@FXML 
 	private void deleteAlbum(ActionEvent E) throws IOException{
-		TextField tf = new TextField();
-		//get title text field
+		String title = "";
+		VBox vb = (VBox)lastClicked.getChildren().get(0);
+		TextField tf = (TextField)vb.getChildren().get(0);
+		title = tf.getText();
 		
-		for(int i = 0; i < user.getAlbums().size(); i++){
-			if(user.getAlbums().get(i).getTitle().equals(tf.getText())){
-				user.deleteAlbumByIndex(i);
-				return;
+		int item = -1;
+		
+		for(int i = 0; i < tilePane.getChildren().size(); i++){
+			if(lastClicked.equals(tilePane.getChildren().get(i))){
+				item = i;
+				continue;
 			}
+		}
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText("Album" + title + " will be deleted.");
+		alert.setContentText("Are you sure you want to delete this album?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+		    user.deleteAlbumByIndex(item);
+		    PhotoLibrary.writeApp(this.library);
+		    tilePane.getChildren().remove(item);
+		    Platform.runLater(() -> tilePane.requestFocus());
+		} else {
+			Platform.runLater(() -> tilePane.requestFocus());
 		}
 	}
 	
 	@FXML
 	private void renameAlbum() throws IOException{
-        String albumTitle = "";
+		String albumTitle = "";
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.setTitle("Rename Album");
 		dialog.setHeaderText("Please Enter New Album Title");
@@ -192,7 +240,7 @@ public class UserSystemController {
     		alert.setHeaderText("Incorrect Entry");
     		alert.setContentText("Must enter a title");
     		alert.showAndWait();
-    		dialog.setTitle("Album Creation");
+    		dialog.setTitle("Rename Album");
     		dialog.setHeaderText("Please Enter Album Title");
     		result = dialog.showAndWait();
 		}
@@ -213,9 +261,25 @@ public class UserSystemController {
 			}
 		}
 		
-		//update Album
+		int item = -1;
 		
+		for(int i = 0; i < tilePane.getChildren().size(); i++){
+			if(lastClicked.equals(tilePane.getChildren().get(i))){
+				item = i;
+				continue;
+			}
+		}
+		
+		
+		user.getAlbums().get(item).setTitle(albumTitle);
 		PhotoLibrary.writeApp(this.library);
+		
+		VBox vb = (VBox)lastClicked.getChildren().get(0);
+		TextField tf = (TextField)vb.getChildren().get(0);
+		tf.setText(albumTitle);
+		
+		Platform.runLater(() -> tf.requestFocus());
+		Platform.runLater(() -> tilePane.requestFocus());
 	}
 	
 	@FXML
@@ -284,7 +348,6 @@ public class UserSystemController {
 		
 		for(int i = 0; i < user.getAlbums().size(); i++){
 			StackPane sp = new StackPane();
-			ImageView iv = new ImageView();
 			VBox vb = new VBox();
 			tilePane.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(false);
@@ -296,6 +359,7 @@ public class UserSystemController {
 			tv1.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
+				lastClicked = (StackPane)tv1.getParent().getParent();
 			});
 			
 			TextField tv2 = new TextField(user.getAlbums().get(i).getNumPhotos() + " Photos");
@@ -303,11 +367,13 @@ public class UserSystemController {
 			tv2.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
+				lastClicked = (StackPane)tv1.getParent().getParent();
 			});
 			TextField tv3 = new TextField("Date Range");
 			tv3.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
 				renameAlbum.setVisible(true);
+				lastClicked = (StackPane)tv1.getParent().getParent();
 			});
 			
 			if(user.getAlbums().get(i).getNumPhotos() > 0){
@@ -326,18 +392,10 @@ public class UserSystemController {
 			vb.getChildren().add(tv2);
 			vb.getChildren().add(tv3);
 			vb.getChildren().add(button);
-			sp.getChildren().add(iv);
 			sp.getChildren().add(vb);
 			tilePane.getChildren().add(sp);
 			
 			Platform.runLater(() -> tilePane.requestFocus());
-			
-			albums.setOnSelectionChanged(e->{try {
-				selectTab();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}});
 		}
 
 	
