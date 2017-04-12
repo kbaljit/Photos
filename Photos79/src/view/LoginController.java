@@ -30,7 +30,7 @@ public class LoginController {
 	}
 	
 	@FXML
-	private void buttonAction(ActionEvent E) throws IOException{
+	private void buttonAction(ActionEvent E) throws IOException, ClassNotFoundException{
 		if(username.getText().equals("admin") && password.getText().equals("admin")){
 			
 			
@@ -49,6 +49,8 @@ public class LoginController {
 			loginStage.show();
 		}
 		else if((!username.getText().isEmpty()) && (!password.getText().isEmpty())){
+			library = PhotoLibrary.readApp();
+			users = library.getUsers();
 			boolean userFound=false;
 			for(int i = 0; i < users.size(); i++){
 				if(username.getText().equals(users.get(i).getUsername())){

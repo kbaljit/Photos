@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
@@ -17,54 +16,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.71" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <SplitPane layoutX="232.0" layoutY="65.0" prefHeight="535.0" prefWidth="800.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="65.0">
          <items>
-            <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="albums" closable="false" text="Albums">
+                <Tab closable="false" text="Albums">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TilePane hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                 <children>
-                                    <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: black;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../Pictures/flower.jpg" />
-                                             </image>
-                                          </ImageView>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
-                                             <children>
-                                                <TextField fx:id="albumTitle" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Sample Album">
-                                                   <font>
-                                                      <Font name="System Bold" size="24.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <Blend />
-                                                   </effect>
-                                                </TextField>
-                                                <TextField fx:id="photoCount" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="10 Photos">
-                                                   <font>
-                                                      <Font size="18.0" />
-                                                   </font>
-                                                </TextField>
-                                                <TextField fx:id="dateRange" alignment="CENTER" editable="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Mar 1, 2017 - Mar 10, 2017">
-                                                   <effect>
-                                                      <Blend />
-                                                   </effect>
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </TextField>
-                                                <Button mnemonicParsing="false" onAction="#selectAlbum" prefHeight="25.0" prefWidth="207.0" text="OPEN" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </StackPane>
-                                 </children>
+                              <TilePane fx:id="tilePane" hgap="60.0" layoutX="14.0" layoutY="14.0" prefHeight="504.0" prefWidth="798.0" vgap="40.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" style="-fx-background-color: teal;">
                               </TilePane>
                            </children>
                         </AnchorPane>
@@ -74,20 +36,17 @@
             </TabPane>
          </items>
       </SplitPane>
-      <Label fx:id="titleLabel" layoutX="9.0" layoutY="2.0" prefHeight="61.0" prefWidth="251.0" AnchorPane.leftAnchor="10.0">
+      <Label fx:id="titleLabel" layoutX="9.0" layoutY="2.0" prefHeight="61.0" prefWidth="411.0" AnchorPane.leftAnchor="10.0">
          <font>
-            <Font size="32.0" />
+            <Font size="36.0" />
          </font>
       </Label>
-      <HBox layoutX="261.0" layoutY="33.0" prefHeight="31.0" prefWidth="545.0" AnchorPane.rightAnchor="14.0">
+      <HBox layoutX="562.0" layoutY="33.0" prefHeight="25.0" prefWidth="351.0" spacing="10.0" AnchorPane.rightAnchor="11.0">
          <children>
-            <Button fx:id="deleteAlbum" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
-            <Button fx:id="renameAlbum" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
-            <Button fx:id="createAlbum" mnemonicParsing="false" prefHeight="31.0" prefWidth="135.0" text="Create Album" />
-            <Button fx:id="deleteAlbum" mnemonicParsing="false" prefHeight="31.0" prefWidth="144.0" text="Delete Album" />
-            <Button fx:id="Add" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="83.0" text="Add" visible="false" />
-            <Button fx:id="Delete" mnemonicParsing="false" prefHeight="31.0" prefWidth="106.0" text="Delete" visible="false" />
-            <Button fx:id="logout" mnemonicParsing="false" onAction="#Logout" prefHeight="31.0" prefWidth="126.0" text="Logout" />
+            <Button fx:id="deleteAlbum" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
+            <Button fx:id="renameAlbum" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
+            <Button fx:id="createAAlbum" mnemonicParsing="false" onAction="#createAlbum" prefHeight="31.0" prefWidth="110.0" text="Create Album" />
+            <Button fx:id="logout" mnemonicParsing="false" onAction="#Logout" prefHeight="31.0" prefWidth="91.0" text="Logout" />
          </children>
       </HBox>
       <TextField layoutX="10.0" layoutY="600.0" prefHeight="25.0" prefWidth="800.0" text="Status Bar" />
