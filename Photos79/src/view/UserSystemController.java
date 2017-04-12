@@ -1,5 +1,6 @@
 package view;
 
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.imageio.ImageIO;
+
 import java.util.Optional;
 
 import application.Album;
@@ -16,6 +18,8 @@ import application.PhotoLibrary;
 import application.Tag;
 import application.User;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -180,21 +184,6 @@ public class UserSystemController {
 	}
 	
 	@FXML 
-	private void selectTab() throws IOException{
-		createAlbum.setVisible(false);
-		deleteAlbum.setVisible(false);
-		renameAlbum.setVisible(false);
-		Add.setVisible(true);
-		Delete.setVisible(true);
-		Search.setVisible(true);
-		Caption.setVisible(true);
-		Tag.setVisible(true);
-		Copy.setVisible(true);
-		Move.setVisible(true);
-		SlideShow.setVisible(true);
-	}
-	
-	@FXML 
 	private void deleteAlbum(ActionEvent E) throws IOException{
 		String title = "";
 		VBox vb = (VBox)lastClicked.getChildren().get(0);
@@ -297,10 +286,6 @@ public class UserSystemController {
 		
 		tabPane.getTabs().add(tab);
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-		/*createAlbum.setVisible(false);
-		deleteAlbum.setVisible(false);
-		Add.setVisible(true);
-		Delete.setVisible(true);*/
 		selectionModel.select(tab);
 		for(int i=0; i<this.user.getAlbums().size(); i++){
 			if(AlbumName.equals(this.user.getAlbums().get(i))){
@@ -334,6 +319,8 @@ public class UserSystemController {
 	
 	@FXML
 	private void uploadPicture(ActionEvent E) throws IOException{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
 		
 	}
 	
@@ -396,6 +383,35 @@ public class UserSystemController {
 			tilePane.getChildren().add(sp);
 			
 			Platform.runLater(() -> tilePane.requestFocus());
+			
+			tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+				  @Override public void changed(ObservableValue<? extends Tab> tab, Tab oldTab, Tab newTab) {
+				    if(newTab.equals(albums)){
+				    	createAlbum.setVisible(true);
+				    	Add.setVisible(false);
+				    	Delete.setVisible(false);
+				    	Search.setVisible(false);
+				    	Caption.setVisible(false);
+				    	Tag.setVisible(false);
+				    	Copy.setVisible(false);
+				    	Move.setVisible(false);
+				    	SlideShow.setVisible(false);
+				    }
+				    else{
+				    	createAlbum.setVisible(false);
+				    	deleteAlbum.setVisible(false);
+				    	renameAlbum.setVisible(false);
+				    	Add.setVisible(true);
+				    	Delete.setVisible(true);
+				    	Search.setVisible(true);
+				    	Caption.setVisible(true);
+				    	Tag.setVisible(true);
+				    	Copy.setVisible(true);
+				    	Move.setVisible(true);
+				    	SlideShow.setVisible(true);
+				    }
+				  }
+				});
 		}
 
 	

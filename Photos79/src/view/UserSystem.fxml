@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
@@ -44,6 +44,17 @@
             <Button fx:id="logout" mnemonicParsing="false" onAction="#Logout" prefHeight="31.0" prefWidth="91.0" text="Logout" />
          </children>
       </HBox>
-      <TextField layoutX="10.0" layoutY="600.0" prefHeight="25.0" prefWidth="800.0" text="Status Bar" />
+      <ButtonBar layoutX="14.0" layoutY="599.0" prefHeight="0.0" prefWidth="798.0">
+        <buttons>
+          <Button fx:id="Add" mnemonicParsing="false" text="Add" visible="false" />
+            <Button fx:id="Delete" mnemonicParsing="false" text="Delete" visible="false" />
+            <Button fx:id="Search" mnemonicParsing="false" text="Search" visible="false" />
+            <Button fx:id="Caption" mnemonicParsing="false" text="Caption" visible="false" />
+            <Button fx:id="Tag" mnemonicParsing="false" text="Tag" visible="false" />
+            <Button fx:id="Copy" mnemonicParsing="false" text="Copy" visible="false" />
+            <Button fx:id="Move" mnemonicParsing="false" text="Move" visible="false" />
+            <Button fx:id="SlideShow" mnemonicParsing="false" text="SlideShow" visible="false" />
+        </buttons>
+      </ButtonBar>
    </children>
 </AnchorPane>
