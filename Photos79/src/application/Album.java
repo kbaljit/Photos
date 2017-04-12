@@ -59,14 +59,19 @@ public class Album implements Serializable{
 	public String dateRange(){
 		Calendar min = photos.get(0).getDate();
 		Calendar max = photos.get(0).getDate();
+		int minP = -1;
+		int maxP = -1;
 		for(int i = 1; i < photos.size(); i++){
 			if(photos.get(i).getDate().before(min)){
 				min = photos.get(i).getDate();
+				minP = i;
 			}
 			if(photos.get(i).getDate().after(max)){
 				max = photos.get(i).getDate();
+				maxP = i;
 			}
 		}
-		return min.toString() + ", " + max.toString();
+		
+		return photos.get(minP).getDateString() + " - "+ photos.get(maxP).getDateString();
 	}
 }

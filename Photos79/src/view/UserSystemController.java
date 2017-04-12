@@ -168,7 +168,7 @@ public class UserSystemController {
 		});
 		TextField tv1 = new TextField();
 		tv1.setPrefSize(200, 50);
-		tv1.setText(albumTitle.toUpperCase().charAt(0) + albumTitle.substring(1));
+		tv1.setText(albumTitle);
 		tv1.setAlignment(Pos.CENTER);
 		tv1.setFont(Font.font ("System", 24));
 		tv1.setEditable(false);
@@ -190,7 +190,6 @@ public class UserSystemController {
 			lastClicked = (StackPane)tv1.getParent().getParent();
 		});
 		TextField tv3 = new TextField("Date Range");
-		tv3.setAlignment(Pos.CENTER);
 		tv3.setPrefSize(200, 50);
 		tv3.setOnMouseClicked(e -> {
 			deleteAlbum.setVisible(true);
@@ -199,6 +198,7 @@ public class UserSystemController {
 		});
 		
 		tv3.setEditable(false);
+		tv3.setAlignment(Pos.CENTER);
 		tv3.setStyle("-fx-background-color: transparent;");
 		Button button = new Button("OPEN");
 		button.setPrefSize(200, 30);
@@ -407,8 +407,8 @@ public class UserSystemController {
 				for(int j=0; j<this.user.getAlbums().get(i).getPhotos().size(); j++){
 				
 				Photo P=this.user.getAlbums().get(i).getPhotos().get(j);
+
 				ArrayList<Tag> tag=P.getTags();
-				Calendar date=P.getDate();
 				String caption=P.getCaption();
 				File F=P.getImage();
 				BufferedImage image=ImageIO.read(F);
@@ -434,7 +434,7 @@ public class UserSystemController {
 				TextField tv1 = new TextField(caption);
 				tv1.setEditable(false);
 				
-				TextField tv2 = new TextField(date.toString());
+				TextField tv2 = new TextField(P.getDateString());
 				tv2.setEditable(false);
 				vb.getChildren().add(iv);
 				vb.getChildren().add(tv1);
@@ -489,7 +489,8 @@ public class UserSystemController {
 				tv1.setOnMouseClicked(e -> {
 					
 				});
-				TextField tv2 = new TextField(P.getDate().toString());
+				TextField tv2 = new TextField(P.getDateString());
+
 				tv2.setEditable(false);
 				tv2.setOnMouseClicked(e -> {
 					
@@ -503,7 +504,7 @@ public class UserSystemController {
 				
 			}
 		}
-		
+		Platform.runLater(() -> tabPane.requestFocus());
 		
 	}
 	
@@ -579,8 +580,7 @@ public class UserSystemController {
 			});
 			TextField tv1 = new TextField();
 			tv1.setPrefSize(200, 50);
-			tv1.setText(user.getAlbums().get(i).getTitle().toUpperCase().charAt(0) + 
-					user.getAlbums().get(i).getTitle().substring(1));
+			tv1.setText(user.getAlbums().get(i).getTitle());
 			tv1.setAlignment(Pos.CENTER);
 			tv1.setFont(Font.font ("System", 24));
 			tv1.setEditable(false);
@@ -602,7 +602,6 @@ public class UserSystemController {
 				lastClicked = (StackPane)tv1.getParent().getParent();
 			});
 			TextField tv3 = new TextField("Date Range");
-			tv3.setAlignment(Pos.CENTER);
 			tv3.setPrefSize(200, 50);
 			tv3.setOnMouseClicked(e -> {
 				deleteAlbum.setVisible(true);
@@ -614,6 +613,7 @@ public class UserSystemController {
 				tv3 = new TextField(user.getAlbums().get(i).dateRange());
 			}
 			tv3.setEditable(false);
+			tv3.setAlignment(Pos.CENTER);
 			tv3.setStyle("-fx-background-color: transparent;");
 			Button button = new Button("OPEN");
 			button.setPrefSize(200, 30);
