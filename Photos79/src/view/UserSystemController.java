@@ -83,7 +83,7 @@ public class UserSystemController {
 	@FXML TabPane tabPane;
 	@FXML VBox VContainer;
 	@FXML ScrollPane S;
-	ImageView deleteImage;
+	ImageView selectImage;
 	
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
@@ -426,7 +426,7 @@ public class UserSystemController {
 				iv.setFitHeight(200.0);
 				iv.setFitWidth(200.0);
 				iv.setOnMouseClicked(f -> {
-					deleteImage=iv;
+					selectImage=iv;
 					Delete.setVisible(true);
 			    	Caption.setVisible(true);
 			    	Tag.setVisible(true);
@@ -479,7 +479,7 @@ public class UserSystemController {
 				iv.setFitHeight(200.0);
 				iv.setFitWidth(200.0);
 				iv.setOnMouseClicked(e -> {
-					deleteImage=iv;
+					selectImage=iv;
 					Delete.setVisible(true);
 			    	Caption.setVisible(true);
 			    	Tag.setVisible(true);
@@ -523,7 +523,7 @@ public class UserSystemController {
 			}
 		}
 		
-		VBox dBox=(VBox)deleteImage.getParent();
+		VBox dBox=(VBox)selectImage.getParent();
 		StackPane dStack=(StackPane)dBox.getParent();
 		TilePane dTile=(TilePane)dStack.getParent();
 		int pLocation=0;
@@ -546,6 +546,68 @@ public class UserSystemController {
 	    		PhotoLibrary.writeApp(this.library);
 	    		
 	    	}
+	@FXML
+	private void captionPhoto(ActionEvent E) throws IOException{
+		String Caption="";
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Enter Caption");
+		dialog.setHeaderText("Please Enter Caption for the Photo");
+		Optional<String> result = dialog.showAndWait();
+		
+		while(dialog.getResult().isEmpty()){
+			Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error Dialog");
+    		alert.setHeaderText("Incorrect Entry");
+    		alert.setContentText("Must enter a caption");
+    		alert.showAndWait();
+    		dialog.setTitle("Enter Caption");
+    		dialog.setHeaderText("Please Enter Caption for the Photo");
+    		result = dialog.showAndWait();
+		}
+        if (result.isPresent()) {
+            Caption = result.get();
+        }
+		
+		Album dAlbum=null;
+		int aLocation=0;
+		for(int i=0;i<user.getAlbums().size();i++){
+			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
+				aLocation=i;
+				dAlbum=user.getAlbums().get(i);
+			}
+		}
+		
+		VBox dBox=(VBox)selectImage.getParent();
+		StackPane dStack=(StackPane)dBox.getParent();
+		TilePane dTile=(TilePane)dStack.getParent();
+		int pLocation=0;
+		for(int i=0; i<dTile.getChildren().size(); i++){
+			if(dStack.equals(dTile.getChildren().get(i))){
+				TextField caption=(TextField)dBox.getChildren().get(1);
+				caption.setText(Caption);
+				pLocation=i;
+			}
+		}
+				
+				user.getAlbums().get(aLocation).getPhotos().get(pLocation).setCaption(Caption);;
+	    		for(int j=0; j<this.library.getUsers().size();j++){
+	    			if(user.getUsername().equals(this.library.getUsers().get(j).getUsername())){
+	    				this.library.getUsers().remove(j);
+	    				this.library.getUsers().add(user);
+	    				
+	    			}
+	    		}
+	    		
+	    		PhotoLibrary.writeApp(this.library);
+		
+	}
+	
+	@FXML 
+	private void tagPhoto(ActionEvent E){
+		
+	}
+	
 	
 	
 	public Image convertBuffered(BufferedImage image){
