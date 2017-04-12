@@ -58,7 +58,7 @@ public class LoginController {
 					    AnchorPane root = (AnchorPane)loader.load();
 					    
 					    UserSystemController userController =  loader.getController();
-						Scene userScene=new Scene(root, 700, 700);
+						Scene userScene=new Scene(root, 810, 620);
 						Stage userStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
 						userController.start(userStage);
 						userStage.hide();

@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class User implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	private ArrayList<Album> albums;
@@ -32,6 +33,10 @@ public class User implements Serializable{
 	
 	public void addAlbum(Album album){
 		albums.add(album);
+	}
+	
+	public void deleteAlbumByIndex(int index){
+		albums.remove(index);
 	}
 	
 	public void deleteAlbum(String title){
