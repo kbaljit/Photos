@@ -35,6 +35,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * 
+ * @author Baljit Kaur
+ * @author Milan Patel
+ *
+ * Represents a photo library admin's control system
+ */
 public class AdminSystemController {
 	private PhotoLibrary library;
 	public String newUser;
@@ -51,10 +58,19 @@ public class AdminSystemController {
 	@FXML Button List;
 	@FXML Button Unlist;
 	
+	/**
+	 * Initializes an admin object for given photoLibrary
+	 * @param library PhotoLibrary instance
+	 */
 	public AdminSystemController(PhotoLibrary library){
 		this.library=library;
 	}
 	
+	/**
+	 * Allows the admin to log out of admin control system
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML 
 	private void Logout(ActionEvent E) throws IOException{
 		//Save changes to disk
@@ -74,6 +90,11 @@ public class AdminSystemController {
 		
 	}
 	
+	/**
+	 * Creates new user and adds it to library
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void createUser(ActionEvent E) throws IOException{
 	
@@ -148,6 +169,11 @@ public class AdminSystemController {
 		PhotoLibrary.writeApp(this.library);
 	}
 	
+	/**
+	 * Deletes a user from photo library
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML 
 	private void deleteUser(ActionEvent E) throws IOException{
 		TextInputDialog dialog = new TextInputDialog();
@@ -191,6 +217,11 @@ public class AdminSystemController {
 		
 	}
 	
+	/**
+	 * List users in admin control system
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void listUsers(ActionEvent E) throws IOException{
 		Button B=(Button)E.getSource();
@@ -200,6 +231,11 @@ public class AdminSystemController {
 			userDisplay.setItems(null);
 		}
 	
+	/**
+	 * Shows an alert dialog in admin system
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void helpDialog(ActionEvent E) throws IOException{
 		Alert alert = new Alert(AlertType.INFORMATION);
