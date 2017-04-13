@@ -2,6 +2,8 @@ package view;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
@@ -30,12 +32,16 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
@@ -43,11 +49,13 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -61,6 +69,7 @@ public class UserSystemController {
 	
 	@FXML Button createAlbum;
 	@FXML Button deleteAlbum;
+	@FXML Button Display;
 	@FXML Button Add;
 	@FXML Button Delete;
 	@FXML Button Search;
@@ -84,6 +93,8 @@ public class UserSystemController {
 	@FXML VBox VContainer;
 	@FXML ScrollPane S;
 	ImageView selectImage;
+	public String name;
+	public String value;
 	
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
@@ -236,6 +247,7 @@ public class UserSystemController {
 			    	Tag.setVisible(false);
 			    	Copy.setVisible(false);
 			    	Move.setVisible(false);
+			    	Display.setVisible(false);
 			    	SlideShow.setVisible(false);
 			    }
 			    else{
@@ -250,6 +262,7 @@ public class UserSystemController {
 			    	Copy.setVisible(false);
 			    	Move.setVisible(false);
 			    	SlideShow.setVisible(true);
+			    	Display.setVisible(false);
 			    }
 			  }
 			});
@@ -268,6 +281,7 @@ public class UserSystemController {
 			    	Copy.setVisible(false);
 			    	Move.setVisible(false);
 			    	SlideShow.setVisible(false);
+			    	Display.setVisible(false);
 			    }
 			    else{
 			    	createAlbum.setVisible(false);
@@ -281,6 +295,7 @@ public class UserSystemController {
 			    	Copy.setVisible(false);
 			    	Move.setVisible(false);
 			    	SlideShow.setVisible(true);
+			    	Display.setVisible(false);
 			    }
 			  }
 			});
@@ -432,6 +447,7 @@ public class UserSystemController {
 			    	Tag.setVisible(true);
 			    	Copy.setVisible(true);
 			    	Move.setVisible(true);
+			    	Display.setVisible(true);
 				});
 				
 				TextField tv1 = new TextField(caption);
@@ -485,6 +501,7 @@ public class UserSystemController {
 			    	Tag.setVisible(true);
 			    	Copy.setVisible(true);
 			    	Move.setVisible(true);
+			    	Display.setVisible(true);
 				});
 				
 				TextField tv1 = new TextField(P.getCaption());
@@ -605,6 +622,111 @@ public class UserSystemController {
 	
 	@FXML 
 	private void tagPhoto(ActionEvent E){
+		Album dAlbum=null;
+		int aLocation=0;
+		for(int i=0;i<user.getAlbums().size();i++){
+			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
+				aLocation=i;
+				dAlbum=user.getAlbums().get(i);
+			}
+		}
+		
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Tag Creation");
+		dialog.setHeaderText("Set Name and Value for Tag");
+		
+		ButtonType loginButtonType = new ButtonType("Enter", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+		
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+
+		TextField namefield = new TextField();
+		namefield.setPromptText("Name");
+		PasswordField valuefield = new PasswordField();
+		valuefield.setPromptText("Value");
+
+		grid.add(new Label("Name:"), 0, 0);
+		grid.add(namefield, 1, 0);
+		grid.add(new Label("Value:"), 0, 1);
+		grid.add(valuefield, 1, 1);
+		
+		Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+		dialog.getDialogPane().setContent(grid);
+
+		
+		Platform.runLater(() -> namefield.requestFocus());
+
+		dialog.setResultConverter(dialogButton -> {
+		    if (dialogButton == loginButtonType) {
+		    	if(!namefield.getText().isEmpty() && !valuefield.getText().isEmpty()){
+		    		name=namefield.getText();
+		    		value=valuefield.getText();
+		    		return new Pair<>(namefield.getText(), valuefield.getText());
+		    	}
+		    	else{
+		    		Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error Dialog");
+		    		alert.setHeaderText("Incorrect Entry");
+		    		alert.setContentText("Must enter both a name and a value");
+		    		
+		    		alert.showAndWait();
+		    		return null;
+		    	}
+		    }
+			return null;
+		} );
+	
+		Optional<Pair<String, String>> result = dialog.showAndWait();
+		if(name==null || value==null)
+			return;
+		
+		Tag newTag=new Tag(name, value);
+		boolean tagAdded=false;
+		VBox dBox=(VBox)selectImage.getParent();
+		StackPane dStack=(StackPane)dBox.getParent();
+		TilePane dTile=(TilePane)dStack.getParent();
+		int pLocation=0;
+		for(int i=0; i<dTile.getChildren().size(); i++){
+			if(dStack.equals(dTile.getChildren().get(i))){
+				tagAdded=user.getAlbums().get(aLocation).getPhotos().get(i).addTag(newTag);
+				if(tagAdded){
+					
+				}
+				else{
+					Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error Dialog");
+		    		alert.setHeaderText("Incorrect Entry");
+		    		alert.setContentText("Tag Name Value already exists for this photo");
+		    		
+		    		alert.showAndWait();
+		    		return;
+					
+				}
+			}
+		}
+		
+		if(tagAdded){
+			for(int j=0; j<this.library.getUsers().size();j++){
+    			if(user.getUsername().equals(this.library.getUsers().get(j).getUsername())){
+    				this.library.getUsers().remove(j);
+    				this.library.getUsers().add(user);
+    				
+    			}
+    		}
+    		
+    		try {
+				PhotoLibrary.writeApp(this.library);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	
+		}
+
 		
 	}
 	
@@ -704,6 +826,7 @@ public class UserSystemController {
 				    	Copy.setVisible(false);
 				    	Move.setVisible(false);
 				    	SlideShow.setVisible(false);
+				    	Display.setVisible(false);
 				    }
 				    else{
 				    	createAlbum.setVisible(false);
@@ -717,6 +840,7 @@ public class UserSystemController {
 				    	Copy.setVisible(false);
 				    	Move.setVisible(false);
 				    	SlideShow.setVisible(true);
+				    	Display.setVisible(false);
 				    }
 				  }
 				});

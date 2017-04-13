@@ -64,6 +64,7 @@
             <Button fx:id="Copy" mnemonicParsing="false" text="Copy" visible="false" />
             <Button fx:id="Move" mnemonicParsing="false" text="Move" visible="false" />
             <Button fx:id="SlideShow" mnemonicParsing="false" text="SlideShow" visible="false" />
+            <Button fx:id="Display" mnemonicParsing="false" text="Display" visible="false" />
         </buttons>
       </ButtonBar>
    </children>
