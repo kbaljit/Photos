@@ -966,6 +966,8 @@ public class UserSystemController {
 				    	Move.setVisible(false);
 				    	SlideShow.setVisible(false);
 				    	Display.setVisible(false);
+				    	
+				    	
 				    }
 				    else{
 				    	createAlbum.setVisible(false);
