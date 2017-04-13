@@ -4,6 +4,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
@@ -46,6 +47,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
@@ -455,9 +458,23 @@ public class UserSystemController {
 				
 				TextField tv2 = new TextField(P.getDateString());
 				tv2.setEditable(false);
+				
+				/*ArrayList<String> names=new ArrayList<String>();
+				ArrayList<String> values=new ArrayList<String>();
+				
+				for(int k=0; k<P.getTags().size();k++){
+					names.add(P.getTags().get(k).getTagName());
+					values.add(P.getTags().get(k).getTagValue());
+				}
+				TableColumn c1=new TableColumn();
+				TableColumn c2=new TableColumn();
+				c1.set*/
+				
+				
 				vb.getChildren().add(iv);
 				vb.getChildren().add(tv1);
 				vb.getChildren().add(tv2);
+				//vb.getChildren().add(tv3);
 				sp.getChildren().add(vb);
 				tile.getChildren().add(sp);
 				Platform.runLater(() -> tilePane.requestFocus());
@@ -530,13 +547,11 @@ public class UserSystemController {
 	
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
-		Album dAlbum=null;
 		int aLocation=0;
 		for(int i=0;i<user.getAlbums().size();i++){
 			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
 			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
 				aLocation=i;
-				dAlbum=user.getAlbums().get(i);
 			}
 		}
 		
@@ -730,7 +745,126 @@ public class UserSystemController {
 		
 	}
 	
+	@FXML
+	private void transfer(ActionEvent E) throws IOException{
+		Button b=(Button)E.getSource();
+		String copyMove=b.getText();
+		if(copyMove.equals("Copy")){
+			String albumTitle = "";
+			TextInputDialog dialog = new TextInputDialog();
+			dialog.setTitle("Copy Picture");
+			dialog.setHeaderText("Enter Album to Copy Picture into");
+			Optional<String> result = dialog.showAndWait();
+			
+			while(dialog.getResult().isEmpty()){
+				Alert alert = new Alert(AlertType.ERROR);
+	    		alert.setTitle("Error Dialog");
+	    		alert.setHeaderText("Incorrect Entry");
+	    		alert.setContentText("Must enter an album");
+	    		alert.showAndWait();
+	    		dialog.setTitle("Copy Picture");
+	    		dialog.setHeaderText("Enter Album to Copy Picture into");
+	    		result = dialog.showAndWait();
+			}
+	        if (result.isPresent()) {
+	            albumTitle = result.get();
+	        }
+	        if(!albumTitle.equals("")){
+				for(int i = 0; i < user.getAlbums().size(); i++){
+					if(albumTitle.equals(user.getAlbums().get(i).getTitle())){
+						int aLocation=0;
+						for(int k=0;k<user.getAlbums().size();k++){
+							String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+							if(AlbumName.equals(user.getAlbums().get(k).getTitle())){
+								aLocation=k;
+							}
+						}
+						
+						VBox dBox=(VBox)selectImage.getParent();
+						StackPane dStack=(StackPane)dBox.getParent();
+						TilePane dTile=(TilePane)dStack.getParent();
+						int pLocation=0;
+						for(int j=0; j<dTile.getChildren().size(); j++){
+							if(dStack.equals(dTile.getChildren().get(j))){
+								pLocation=j;
+							}
+						}
+								user.getAlbums().get(i).addPhoto(user.getAlbums().get(aLocation).getPhotos().get(pLocation));
+								for(int j=0; j<this.library.getUsers().size();j++){
+					    			if(user.getUsername().equals(this.library.getUsers().get(j).getUsername())){
+					    				this.library.getUsers().remove(j);
+					    				this.library.getUsers().add(user);
+					    				
+					    			}
+					    		}
+					    		
+					    		PhotoLibrary.writeApp(this.library);
+						}
+	        
+				}
+	        }
+		}
+	        else{
+	        	String albumTitle = "";
+				TextInputDialog dialog = new TextInputDialog();
+				dialog.setTitle("Move Picture");
+				dialog.setHeaderText("Enter Album to Move Picture into");
+				Optional<String> result = dialog.showAndWait();
+				
+				while(dialog.getResult().isEmpty()){
+					Alert alert = new Alert(AlertType.ERROR);
+		    		alert.setTitle("Error Dialog");
+		    		alert.setHeaderText("Incorrect Entry");
+		    		alert.setContentText("Must enter an album");
+		    		alert.showAndWait();
+		    		dialog.setTitle("Move Picture");
+		    		dialog.setHeaderText("Enter Album to Move Picture into");
+		    		result = dialog.showAndWait();
+				}
+		        if (result.isPresent()) {
+		            albumTitle = result.get();
+		        }
+		        if(!albumTitle.equals("")){
+					for(int i = 0; i < user.getAlbums().size(); i++){
+						if(albumTitle.equals(user.getAlbums().get(i).getTitle())){
+							int aLocation=0;
+							for(int k=0;k<user.getAlbums().size();k++){
+								String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+								if(AlbumName.equals(user.getAlbums().get(k).getTitle())){
+									aLocation=k;
+								}
+							}
+							
+							VBox dBox=(VBox)selectImage.getParent();
+							StackPane dStack=(StackPane)dBox.getParent();
+							TilePane dTile=(TilePane)dStack.getParent();
+							int pLocation=0;
+							for(int j=0; j<dTile.getChildren().size(); j++){
+								if(dStack.equals(dTile.getChildren().get(j))){
+									dTile.getChildren().remove(j);
+									pLocation=j;
+								}
+							}
+									user.getAlbums().get(i).addPhoto(user.getAlbums().get(aLocation).getPhotos().get(pLocation));
+									user.getAlbums().get(aLocation).getPhotos().remove(pLocation);
+									for(int j=0; j<this.library.getUsers().size();j++){
+						    			if(user.getUsername().equals(this.library.getUsers().get(j).getUsername())){
+						    				this.library.getUsers().remove(j);
+						    				this.library.getUsers().add(user);
+						    				
+						    			}
+						    		}
+						    		
+						    		PhotoLibrary.writeApp(this.library);
+							}
+		        
+					}
+		        }
+	        	
+			
+		}
 	
+}
 	
 	public Image convertBuffered(BufferedImage image){
 		WritableImage wi=new WritableImage(image.getWidth(), image.getHeight());

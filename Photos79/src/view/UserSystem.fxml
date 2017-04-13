@@ -46,8 +46,9 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox layoutX="562.0" layoutY="33.0" prefHeight="25.0" prefWidth="351.0" spacing="10.0" AnchorPane.rightAnchor="11.0">
+      <HBox layoutX="429.0" layoutY="33.0" prefHeight="31.0" prefWidth="383.0" spacing="10.0" AnchorPane.rightAnchor="8.0">
          <children>
+            <Button fx:id="Search" mnemonicParsing="false" prefHeight="31.0" prefWidth="79.0" text="Search" />
             <Button fx:id="deleteAlbum" mnemonicParsing="false" onAction="#deleteAlbum" prefHeight="25.0" prefWidth="59.0" text="Delete" visible="false" />
             <Button fx:id="renameAlbum" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="25.0" prefWidth="60.0" text="Rename" visible="false" />
             <Button fx:id="createAlbum" mnemonicParsing="false" onAction="#createAlbum" prefHeight="31.0" prefWidth="110.0" text="Create Album" />
@@ -58,11 +59,11 @@
         <buttons>
           <Button fx:id="Add" mnemonicParsing="false" onAction="#uploadPicture" text="Add" visible="false" />
             <Button fx:id="Delete" mnemonicParsing="false" onAction="#deletePicture" text="Delete" visible="false" />
-            <Button fx:id="Search" mnemonicParsing="false" text="Search" visible="false" />
             <Button fx:id="Caption" mnemonicParsing="false" onAction="#captionPhoto" text="Caption" visible="false" />
             <Button fx:id="Tag" mnemonicParsing="false" onAction="#tagPhoto" text="Tag" visible="false" />
-            <Button fx:id="Copy" mnemonicParsing="false" text="Copy" visible="false" />
-            <Button fx:id="Move" mnemonicParsing="false" text="Move" visible="false" />
+            <Button mnemonicParsing="false" text="DeleteTag" />
+            <Button fx:id="Copy" mnemonicParsing="false" onAction="#transfer" text="Copy" visible="false" />
+            <Button fx:id="Move" mnemonicParsing="false" onAction="#transfer" text="Move" visible="false" />
             <Button fx:id="SlideShow" mnemonicParsing="false" text="SlideShow" visible="false" />
             <Button fx:id="Display" mnemonicParsing="false" text="Display" visible="false" />
         </buttons>
