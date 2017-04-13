@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -95,7 +96,12 @@ public class UserSystemController {
 	@FXML TabPane tabPane;
 	@FXML VBox VContainer;
 	@FXML ScrollPane S;
+	@FXML Button left;
+	@FXML Button right;
+	@FXML ImageView slideImage;
 	ImageView selectImage;
+	int count = 0;
+	Album a;
 	public String name;
 	public String value;
 	
@@ -880,6 +886,69 @@ public class UserSystemController {
 			}
 		}
 		return wi;
+	}
+	
+	@FXML
+	private void slideShow(ActionEvent E) throws IOException{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("photoview.fxml"));
+		AnchorPane root = (AnchorPane)fxmlLoader.load();
+		Scene userScene=new Scene(root, 810, 620);
+		Stage userStage=(Stage) ((Node) E.getSource()).getScene().getWindow();
+		userStage.hide();
+	    userStage.setTitle(user.getUsername());
+	    userStage.setResizable(false);
+		userStage.setScene(userScene);
+		userStage.show();
+        
+        int aLocation=0;
+		for(int i=0;i<user.getAlbums().size();i++){
+			String AlbumName=tabPane.getSelectionModel().getSelectedItem().getText();
+			if(AlbumName.equals(user.getAlbums().get(i).getTitle())){
+				aLocation=i;
+			}
+		}
+        
+		a = user.getAlbums().get(aLocation);
+		System.out.print(aLocation);
+		File file = (a.getPhotos().get(0).getImage());
+		Image I = new Image(new FileInputStream(file));
+		
+		slideImage = new ImageView(I);
+	
+        Platform.runLater(() -> tilePane.requestFocus());
+	}
+	
+	
+	@FXML
+	private void goLeft(ActionEvent E) throws IOException{
+		if(!(count == 0) && count < a.getNumPhotos() - 1){
+    		BufferedImage br = null;
+			try {
+				br = ImageIO.read(a.getPhotos().get(count - 1).getImage());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    		Image im =convertBuffered(br);
+    		slideImage.setImage(im);
+    		count--;
+    	}
+	}
+	
+	@FXML
+	private void goRight(ActionEvent E) throws IOException{
+		if(!(count == a.getNumPhotos())){
+    		BufferedImage br = null;
+			try {
+				br = ImageIO.read(a.getPhotos().get(count + 1).getImage());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    		Image im =convertBuffered(br);
+    		slideImage.setImage(im);
+    		count++;
+    	}
 	}
 	
 	public void start(Stage mainStage){ 
