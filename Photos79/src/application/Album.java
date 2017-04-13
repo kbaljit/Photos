@@ -106,8 +106,8 @@ public class Album implements Serializable{
 	public String dateRange(){
 		Calendar min = photos.get(0).getDate();
 		Calendar max = photos.get(0).getDate();
-		int minP = -1;
-		int maxP = -1;
+		int minP = 0;
+		int maxP = 0;
 		for(int i = 1; i < photos.size(); i++){
 			if(photos.get(i).getDate().before(min)){
 				min = photos.get(i).getDate();
