@@ -418,6 +418,11 @@ public class UserSystemController {
 		VBox.setVgrow(Tile, Priority.ALWAYS);
 
 		Tile.setStyle("-fx-background-color: teal;");
+		for(int i=0;i<tabPane.getTabs().size();i++){
+			if(AlbumName.equals(tabPane.getTabs().get(i).getText())){
+				tabPane.getTabs().remove(i);
+			}
+		}
 
 		
 		tabPane.getTabs().add(tab);
