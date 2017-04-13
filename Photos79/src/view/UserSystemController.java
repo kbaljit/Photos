@@ -3,8 +3,6 @@ package view;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
-
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
@@ -66,6 +64,12 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+/**
+ * 
+ * @author Baljit Kaur
+ * @author Milan Patel
+ *
+ */
 public class UserSystemController {
 	private User user; 
 	private PhotoLibrary library;
@@ -105,12 +109,22 @@ public class UserSystemController {
 	public String name;
 	public String value;
 	
+	/**
+	 * Initializes controller with user and photo library instance
+	 * @param U
+	 * @param library
+	 */
 	public UserSystemController(User U, PhotoLibrary library){
 		this.user=U;
 		this.library=library;
 		
 	}
 	
+	/**
+	 * Allows user to logout, opens login page
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML 
 	private void Logout(ActionEvent E) throws IOException{
 		//Save changes to disk
@@ -130,6 +144,11 @@ public class UserSystemController {
 		PhotoLibrary.writeApp(this.library);
 	}
 	
+	/**
+	 * Creates new album and displays
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void createAlbum(ActionEvent E) throws IOException{
 		String albumTitle = "";
@@ -310,6 +329,11 @@ public class UserSystemController {
 			});
 	}
 	
+	/**
+	 * Deletes an album and updates display
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML 
 	private void deleteAlbum(ActionEvent E) throws IOException{
 		String title = "";
@@ -350,6 +374,10 @@ public class UserSystemController {
 		}
 	}
 	
+	/**
+	 * Renames an album and updates display
+	 * @throws IOException
+	 */
 	@FXML
 	private void renameAlbum() throws IOException{
 		String albumTitle = "";
@@ -406,6 +434,11 @@ public class UserSystemController {
 		Platform.runLater(() -> tilePane.requestFocus());
 	}
 	
+	/**
+	 * Open an album in a new tab
+	 * @param e
+	 * @throws IOException
+	 */
 	@FXML
 	private void openAlbum(ActionEvent e) throws IOException{
 		ScrollPane root=new ScrollPane();
@@ -496,6 +529,11 @@ public class UserSystemController {
 		}
 	}
 	
+	/**
+	 * Uploads a photo
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void uploadPicture(ActionEvent E) throws IOException{
 		FileChooser fileChooser = new FileChooser();
@@ -556,6 +594,11 @@ public class UserSystemController {
 		
 	}
 	
+	/**
+	 * deletes a photo
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void deletePicture(ActionEvent E) throws IOException{
 		int aLocation=0;
@@ -588,7 +631,14 @@ public class UserSystemController {
 	    		
 	    		PhotoLibrary.writeApp(this.library);
 	    		
-	    	}
+	    
+	}
+	
+	/**
+	 * adds caption to photo
+	 * @param E
+	 * @throws IOException
+	 */
 	@FXML
 	private void captionPhoto(ActionEvent E) throws IOException{
 		String Caption="";
@@ -646,6 +696,10 @@ public class UserSystemController {
 		
 	}
 	
+	/**
+	 * adds tag to photo
+	 * @param E
+	 */
 	@FXML 
 	private void tagPhoto(ActionEvent E){
 		Album dAlbum=null;
@@ -1035,8 +1089,6 @@ public class UserSystemController {
 				    	Move.setVisible(false);
 				    	SlideShow.setVisible(false);
 				    	Display.setVisible(false);
-				    	
-				    	
 				    }
 				    else{
 				    	createAlbum.setVisible(false);
